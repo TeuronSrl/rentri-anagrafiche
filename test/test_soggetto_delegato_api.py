@@ -15,7 +15,7 @@
 
 import unittest
 
-from rentri_anagrafiche.api.soggetto_delegato_api import SoggettoDelegatoApi
+from rentri_anagrafiche.api.soggetto_delegato_api import SoggettoDelegatoApi  # noqa: E501
 
 
 class TestSoggettoDelegatoApi(unittest.TestCase):
@@ -25,68 +25,68 @@ class TestSoggettoDelegatoApi(unittest.TestCase):
         self.api = SoggettoDelegatoApi()
 
     def tearDown(self) -> None:
-        pass
+        self.api.api_client.close()
 
     def test_soggetto_delegato_get(self) -> None:
         """Test case for soggetto_delegato_get
 
-        Elenco dei soggetti delegati
+        Elenco dei soggetti delegati  # noqa: E501
         """
         pass
 
     def test_soggetto_delegato_num_iscr_ass_registri_get(self) -> None:
         """Test case for soggetto_delegato_num_iscr_ass_registri_get
 
-        Elenco registri
+        Elenco registri  # noqa: E501
         """
         pass
 
     def test_soggetto_delegato_num_iscr_ass_siti_get(self) -> None:
         """Test case for soggetto_delegato_num_iscr_ass_siti_get
 
-        Elenco unità locali
+        Elenco unità locali  # noqa: E501
         """
         pass
 
     def test_soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get(self) -> None:
         """Test case for soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get
 
-        Ottiene il dettaglio dell'unità locale per cui ha delega il soggetto delegato.
+        Ottiene il dettaglio dell'unità locale per cui ha delega il soggetto delegato.  # noqa: E501
         """
         pass
 
     def test_soggetto_delegato_registri_identificativo_delete(self) -> None:
         """Test case for soggetto_delegato_registri_identificativo_delete
 
-        Chiudi registro
+        Chiudi registro  # noqa: E501
         """
         pass
 
     def test_soggetto_delegato_registri_identificativo_get(self) -> None:
         """Test case for soggetto_delegato_registri_identificativo_get
 
-        Dati registro
+        Dati registro  # noqa: E501
         """
         pass
 
     def test_soggetto_delegato_registri_identificativo_put(self) -> None:
         """Test case for soggetto_delegato_registri_identificativo_put
 
-        Modifica registro
+        Modifica registro  # noqa: E501
         """
         pass
 
     def test_soggetto_delegato_registri_identificativo_xml_get(self) -> None:
         """Test case for soggetto_delegato_registri_identificativo_xml_get
 
-        Vidimazione virtuale registro in formato XML
+        Vidimazione virtuale registro in formato XML  # noqa: E501
         """
         pass
 
     def test_soggetto_delegato_registri_post(self) -> None:
         """Test case for soggetto_delegato_registri_post
 
-        Apertura nuovo registro
+        Apertura nuovo registro  # noqa: E501
         """
         pass
 

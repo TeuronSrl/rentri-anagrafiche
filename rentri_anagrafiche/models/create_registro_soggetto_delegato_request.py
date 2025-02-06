@@ -18,72 +18,55 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from typing import Optional, Set
-from typing_extensions import Self
+
+
+from pydantic import BaseModel, Field, constr
 
 class CreateRegistroSoggettoDelegatoRequest(BaseModel):
     """
     CreateRegistroSoggettoDelegatoRequest
-    """ # noqa: E501
-    num_iscr_sito: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Numero iscrizione unità locale rilasciato all'iscrizione. Per recuperare l'identificativo attribuito all'unità locale delegante consultare l'operazione Elenco unità locali deleganti  nell'area riservata Soggetti delegati dove è presente la voce Num. iscr. UL.")
-    num_iscr_ass: Annotated[str, Field(min_length=1, strict=True)] = Field(description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione")
-    descrizione: Annotated[str, Field(min_length=1, strict=True, max_length=250)] = Field(description="Descrizione del registro")
-    __properties: ClassVar[List[str]] = ["num_iscr_sito", "num_iscr_ass", "descrizione"]
+    """
+    num_iscr_sito: constr(strict=True, min_length=1) = Field(default=..., description="Numero iscrizione unità locale rilasciato all'iscrizione. Per recuperare l'identificativo attribuito all'unità locale delegante consultare l'operazione Elenco unità locali deleganti  nell'area riservata Soggetti delegati dove è presente la voce Num. iscr. UL.")
+    num_iscr_ass: constr(strict=True, min_length=1) = Field(default=..., description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione")
+    descrizione: constr(strict=True, max_length=250, min_length=1) = Field(default=..., description="Descrizione del registro")
+    __properties = ["num_iscr_sito", "num_iscr_ass", "descrizione"]
 
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
-
+    class Config:
+        """Pydantic configuration"""
+        allow_population_by_field_name = True
+        validate_assignment = True
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        return pprint.pformat(self.dict(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> CreateRegistroSoggettoDelegatoRequest:
         """Create an instance of CreateRegistroSoggettoDelegatoRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Return the dictionary representation of the model using alias.
-
-        This has the following differences from calling pydantic's
-        `self.model_dump(by_alias=True)`:
-
-        * `None` is only added to the output dict for nullable fields that
-          were set at model initialization. Other fields with value `None`
-          are ignored.
-        """
-        excluded_fields: Set[str] = set([
-        ])
-
-        _dict = self.model_dump(
-            by_alias=True,
-            exclude=excluded_fields,
-            exclude_none=True,
-        )
+    def to_dict(self):
+        """Returns the dictionary representation of the model using alias"""
+        _dict = self.dict(by_alias=True,
+                          exclude={
+                          },
+                          exclude_none=True)
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict) -> CreateRegistroSoggettoDelegatoRequest:
         """Create an instance of CreateRegistroSoggettoDelegatoRequest from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return cls.model_validate(obj)
+            return CreateRegistroSoggettoDelegatoRequest.parse_obj(obj)
 
-        _obj = cls.model_validate({
+        _obj = CreateRegistroSoggettoDelegatoRequest.parse_obj({
             "num_iscr_sito": obj.get("num_iscr_sito"),
             "num_iscr_ass": obj.get("num_iscr_ass"),
             "descrizione": obj.get("descrizione")

@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **sezione** | **str** |  | [optional] 
@@ -21,7 +20,7 @@ json = "{}"
 # create an instance of AutAlboModel from a JSON string
 aut_albo_model_instance = AutAlboModel.from_json(json)
 # print the JSON string representation of the object
-print(AutAlboModel.to_json())
+print AutAlboModel.to_json()
 
 # convert the object into a dict
 aut_albo_model_dict = aut_albo_model_instance.to_dict()

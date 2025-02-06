@@ -19,17 +19,15 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import List, Optional
+from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, conlist
 from rentri_anagrafiche.models.attivita import Attivita
 from rentri_anagrafiche.models.sito_delega_ass_model import SitoDelegaAssModel
-from typing import Optional, Set
-from typing_extensions import Self
 
 class SitoModel(BaseModel):
     """
-    Unità locale
-    """ # noqa: E501
+    Unità locale  # noqa: E501
+    """
     num_iscr_sito: Optional[StrictStr] = None
     num_iscr_operatore: Optional[StrictStr] = None
     denominazione_operatore: Optional[StrictStr] = None
@@ -45,155 +43,140 @@ class SitoModel(BaseModel):
     progressivo_ri: Optional[StrictInt] = None
     cu_aoo: Optional[StrictStr] = None
     cuu: Optional[StrictStr] = None
-    deleghe_ass: Optional[List[SitoDelegaAssModel]] = None
-    attivita: Optional[List[Attivita]] = Field(default=None, description="<p>Valori ammessi:<ul style=\"margin:0\"><li><i>CentroRaccolta</i> - Centro di raccolta</li><li><i>Produzione</i> - Produzione di rifiuti</li><li><i>Recupero</i> - Recupero di rifiuti</li><li><i>Smaltimento</i> - Smaltimento di rifiuti</li><li><i>Trasporto</i> - Trasporto di rifiuti</li><li><i>IntermediazioneSenzaDetenzione</i> - Intermediazione e commercio di rifiuti senza detenzione</li></ul></p>")
+    deleghe_ass: Optional[conlist(SitoDelegaAssModel)] = None
+    attivita: Optional[conlist(Attivita)] = Field(default=None, description="<p>Valori ammessi:<ul style=\"margin:0\"><li><i>CentroRaccolta</i> - Centro di raccolta</li><li><i>Produzione</i> - Produzione di rifiuti</li><li><i>Recupero</i> - Recupero di rifiuti</li><li><i>Smaltimento</i> - Smaltimento di rifiuti</li><li><i>Trasporto</i> - Trasporto di rifiuti</li><li><i>IntermediazioneSenzaDetenzione</i> - Intermediazione e commercio di rifiuti senza detenzione</li></ul></p>")
     data_iscrizione: Optional[datetime] = None
     data_cancellazione: Optional[datetime] = None
-    __properties: ClassVar[List[str]] = ["num_iscr_sito", "num_iscr_operatore", "denominazione_operatore", "identificativo_operatore", "ipa_operatore", "nome", "is_sede_legale", "comune_id", "provincia_id", "indirizzo", "civico", "cciaari", "progressivo_ri", "cu_aoo", "cuu", "deleghe_ass", "attivita", "data_iscrizione", "data_cancellazione"]
+    __properties = ["num_iscr_sito", "num_iscr_operatore", "denominazione_operatore", "identificativo_operatore", "ipa_operatore", "nome", "is_sede_legale", "comune_id", "provincia_id", "indirizzo", "civico", "cciaari", "progressivo_ri", "cu_aoo", "cuu", "deleghe_ass", "attivita", "data_iscrizione", "data_cancellazione"]
 
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
-
+    class Config:
+        """Pydantic configuration"""
+        allow_population_by_field_name = True
+        validate_assignment = True
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        return pprint.pformat(self.dict(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> SitoModel:
         """Create an instance of SitoModel from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Return the dictionary representation of the model using alias.
-
-        This has the following differences from calling pydantic's
-        `self.model_dump(by_alias=True)`:
-
-        * `None` is only added to the output dict for nullable fields that
-          were set at model initialization. Other fields with value `None`
-          are ignored.
-        """
-        excluded_fields: Set[str] = set([
-        ])
-
-        _dict = self.model_dump(
-            by_alias=True,
-            exclude=excluded_fields,
-            exclude_none=True,
-        )
+    def to_dict(self):
+        """Returns the dictionary representation of the model using alias"""
+        _dict = self.dict(by_alias=True,
+                          exclude={
+                          },
+                          exclude_none=True)
         # override the default output from pydantic by calling `to_dict()` of each item in deleghe_ass (list)
         _items = []
         if self.deleghe_ass:
-            for _item_deleghe_ass in self.deleghe_ass:
-                if _item_deleghe_ass:
-                    _items.append(_item_deleghe_ass.to_dict())
+            for _item in self.deleghe_ass:
+                if _item:
+                    _items.append(_item.to_dict())
             _dict['deleghe_ass'] = _items
         # set to None if num_iscr_sito (nullable) is None
-        # and model_fields_set contains the field
-        if self.num_iscr_sito is None and "num_iscr_sito" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.num_iscr_sito is None and "num_iscr_sito" in self.__fields_set__:
             _dict['num_iscr_sito'] = None
 
         # set to None if num_iscr_operatore (nullable) is None
-        # and model_fields_set contains the field
-        if self.num_iscr_operatore is None and "num_iscr_operatore" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.num_iscr_operatore is None and "num_iscr_operatore" in self.__fields_set__:
             _dict['num_iscr_operatore'] = None
 
         # set to None if denominazione_operatore (nullable) is None
-        # and model_fields_set contains the field
-        if self.denominazione_operatore is None and "denominazione_operatore" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.denominazione_operatore is None and "denominazione_operatore" in self.__fields_set__:
             _dict['denominazione_operatore'] = None
 
         # set to None if identificativo_operatore (nullable) is None
-        # and model_fields_set contains the field
-        if self.identificativo_operatore is None and "identificativo_operatore" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.identificativo_operatore is None and "identificativo_operatore" in self.__fields_set__:
             _dict['identificativo_operatore'] = None
 
         # set to None if ipa_operatore (nullable) is None
-        # and model_fields_set contains the field
-        if self.ipa_operatore is None and "ipa_operatore" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.ipa_operatore is None and "ipa_operatore" in self.__fields_set__:
             _dict['ipa_operatore'] = None
 
         # set to None if nome (nullable) is None
-        # and model_fields_set contains the field
-        if self.nome is None and "nome" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.nome is None and "nome" in self.__fields_set__:
             _dict['nome'] = None
 
         # set to None if comune_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.comune_id is None and "comune_id" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.comune_id is None and "comune_id" in self.__fields_set__:
             _dict['comune_id'] = None
 
         # set to None if provincia_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.provincia_id is None and "provincia_id" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.provincia_id is None and "provincia_id" in self.__fields_set__:
             _dict['provincia_id'] = None
 
         # set to None if indirizzo (nullable) is None
-        # and model_fields_set contains the field
-        if self.indirizzo is None and "indirizzo" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.indirizzo is None and "indirizzo" in self.__fields_set__:
             _dict['indirizzo'] = None
 
         # set to None if civico (nullable) is None
-        # and model_fields_set contains the field
-        if self.civico is None and "civico" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.civico is None and "civico" in self.__fields_set__:
             _dict['civico'] = None
 
         # set to None if cciaari (nullable) is None
-        # and model_fields_set contains the field
-        if self.cciaari is None and "cciaari" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.cciaari is None and "cciaari" in self.__fields_set__:
             _dict['cciaari'] = None
 
         # set to None if progressivo_ri (nullable) is None
-        # and model_fields_set contains the field
-        if self.progressivo_ri is None and "progressivo_ri" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.progressivo_ri is None and "progressivo_ri" in self.__fields_set__:
             _dict['progressivo_ri'] = None
 
         # set to None if cu_aoo (nullable) is None
-        # and model_fields_set contains the field
-        if self.cu_aoo is None and "cu_aoo" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.cu_aoo is None and "cu_aoo" in self.__fields_set__:
             _dict['cu_aoo'] = None
 
         # set to None if cuu (nullable) is None
-        # and model_fields_set contains the field
-        if self.cuu is None and "cuu" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.cuu is None and "cuu" in self.__fields_set__:
             _dict['cuu'] = None
 
         # set to None if deleghe_ass (nullable) is None
-        # and model_fields_set contains the field
-        if self.deleghe_ass is None and "deleghe_ass" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.deleghe_ass is None and "deleghe_ass" in self.__fields_set__:
             _dict['deleghe_ass'] = None
 
         # set to None if attivita (nullable) is None
-        # and model_fields_set contains the field
-        if self.attivita is None and "attivita" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.attivita is None and "attivita" in self.__fields_set__:
             _dict['attivita'] = None
 
         # set to None if data_cancellazione (nullable) is None
-        # and model_fields_set contains the field
-        if self.data_cancellazione is None and "data_cancellazione" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.data_cancellazione is None and "data_cancellazione" in self.__fields_set__:
             _dict['data_cancellazione'] = None
 
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict) -> SitoModel:
         """Create an instance of SitoModel from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return cls.model_validate(obj)
+            return SitoModel.parse_obj(obj)
 
-        _obj = cls.model_validate({
+        _obj = SitoModel.parse_obj({
             "num_iscr_sito": obj.get("num_iscr_sito"),
             "num_iscr_operatore": obj.get("num_iscr_operatore"),
             "denominazione_operatore": obj.get("denominazione_operatore"),
@@ -209,7 +192,7 @@ class SitoModel(BaseModel):
             "progressivo_ri": obj.get("progressivo_ri"),
             "cu_aoo": obj.get("cu_aoo"),
             "cuu": obj.get("cuu"),
-            "deleghe_ass": [SitoDelegaAssModel.from_dict(_item) for _item in obj["deleghe_ass"]] if obj.get("deleghe_ass") is not None else None,
+            "deleghe_ass": [SitoDelegaAssModel.from_dict(_item) for _item in obj.get("deleghe_ass")] if obj.get("deleghe_ass") is not None else None,
             "attivita": obj.get("attivita"),
             "data_iscrizione": obj.get("data_iscrizione"),
             "data_cancellazione": obj.get("data_cancellazione")

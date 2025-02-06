@@ -12,14 +12,18 @@
     Do not edit the class manually.
 """  # noqa: E501
 
-import warnings
-from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
-from typing import Any, Dict, List, Optional, Tuple, Union
-from typing_extensions import Annotated
 
-from pydantic import Field, StrictBool, StrictStr
-from typing import Any, List, Optional
+import re  # noqa: F401
+import io
+import warnings
+
+from pydantic import validate_arguments, ValidationError
+
 from typing_extensions import Annotated
+from pydantic import Field, StrictBool, StrictStr, conint, conlist
+
+from typing import Any, List, Optional
+
 from rentri_anagrafiche.models.create_registro_response import CreateRegistroResponse
 from rentri_anagrafiche.models.create_registro_soggetto_delegato_request import CreateRegistroSoggettoDelegatoRequest
 from rentri_anagrafiche.models.downloadable_base_response import DownloadableBaseResponse
@@ -29,9 +33,12 @@ from rentri_anagrafiche.models.sito_model import SitoModel
 from rentri_anagrafiche.models.update_registro_request import UpdateRegistroRequest
 from rentri_anagrafiche.models.update_registro_response import UpdateRegistroResponse
 
-from rentri_anagrafiche.api_client import ApiClient, RequestSerialized
+from rentri_anagrafiche.api_client import ApiClient
 from rentri_anagrafiche.api_response import ApiResponse
-from rentri_anagrafiche.rest import RESTResponseType
+from rentri_anagrafiche.exceptions import (  # noqa: F401
+    ApiTypeError,
+    ApiValueError
+)
 
 
 class SoggettoDelegatoApi:
@@ -46,286 +53,150 @@ class SoggettoDelegatoApi:
             api_client = ApiClient.get_default()
         self.api_client = api_client
 
+    @validate_arguments
+    def soggetto_delegato_get(self, **kwargs) -> List[OperatoreModel]:  # noqa: E501
+        """Elenco dei soggetti delegati  # noqa: E501
 
-    @validate_call
-    def soggetto_delegato_get(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[OperatoreModel]:
-        """Elenco dei soggetti delegati
+        Ritorna l'elenco dei soggetti delegati.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
 
-        Ritorna l'elenco dei soggetti delegati.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
+        >>> thread = api.soggetto_delegato_get(async_req=True)
+        >>> result = thread.get()
 
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: List[OperatoreModel]
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the soggetto_delegato_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.soggetto_delegato_get_with_http_info(**kwargs)  # noqa: E501
+
+    @validate_arguments
+    def soggetto_delegato_get_with_http_info(self, **kwargs) -> ApiResponse:  # noqa: E501
+        """Elenco dei soggetti delegati  # noqa: E501
+
+        Ritorna l'elenco dei soggetti delegati.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.soggetto_delegato_get_with_http_info(async_req=True)
+        >>> result = thread.get()
+
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(List[OperatoreModel], status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._soggetto_delegato_get_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[OperatoreModel]",
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def soggetto_delegato_get_with_http_info(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
+        _all_params = [
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
             ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[OperatoreModel]]:
-        """Elenco dei soggetti delegati
-
-        Ritorna l'elenco dei soggetti delegati.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_get_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[OperatoreModel]",
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method soggetto_delegato_get" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-    @validate_call
-    def soggetto_delegato_get_without_preload_content(
-        self,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Elenco dei soggetti delegati
-
-        Ritorna l'elenco dei soggetti delegati.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
-
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_get_serialize(
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[OperatoreModel]",
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _soggetto_delegato_get_serialize(
-        self,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
+        _path_params = {}
+
         # process the query parameters
+        _query_params = []
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-
-
+        _body_params = None
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json', 
-                    'application/problem+json'
-                ]
-            )
-
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json', 'application/problem+json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'Bearer'
-        ]
+        _auth_settings = ['Bearer']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/soggetto-delegato',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '200': "List[OperatoreModel]",
+            '429': None,
+            '500': "ProblemDetails",
+        }
+
+        return self.api_client.call_api(
+            '/soggetto-delegato', 'GET',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
+            _request_auth=_params.get('_request_auth'))
 
+    @validate_arguments
+    def soggetto_delegato_num_iscr_ass_registri_get(self, num_iscr_ass : Annotated[StrictStr, Field(..., description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione del soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione.")], num_iscr_sito : Annotated[Optional[StrictStr], Field(description="Numero iscrizione unità locale rilasciato all'iscrizione da ricercare.")] = None, identificativo_operatore : Annotated[Optional[StrictStr], Field(description="Codice fiscale dell'operatore da ricercare.")] = None, identificativo : Annotated[Optional[StrictStr], Field(description="Identificativo del registro da ricercare.")] = None, chiuso : Annotated[Optional[StrictBool], Field(description="Flag di chiusura del registro.")] = None, paging_page : Annotated[Optional[conint(strict=True, le=2147483647, ge=1)], Field(description="Valore per l'header Paging-Page.")] = None, paging_page_size : Annotated[Optional[conint(strict=True, le=1000, ge=1)], Field(description="Valore per l'header Paging-PageSize.")] = None, **kwargs) -> List[RegistroModel]:  # noqa: E501
+        """Elenco registri  # noqa: E501
 
+        Ottiene l'elenco dei registri gestiti da un soggetto delegato, filtrati in base ai criteri specificati.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
 
-
-    @validate_call
-    def soggetto_delegato_num_iscr_ass_registri_get(
-        self,
-        num_iscr_ass: Annotated[StrictStr, Field(description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione del soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione.")],
-        num_iscr_sito: Annotated[Optional[StrictStr], Field(description="Numero iscrizione unità locale rilasciato all'iscrizione da ricercare.")] = None,
-        identificativo_operatore: Annotated[Optional[StrictStr], Field(description="Codice fiscale dell'operatore da ricercare.")] = None,
-        identificativo: Annotated[Optional[StrictStr], Field(description="Identificativo del registro da ricercare.")] = None,
-        chiuso: Annotated[Optional[StrictBool], Field(description="Flag di chiusura del registro.")] = None,
-        paging_page: Annotated[Optional[Annotated[int, Field(le=2147483647, strict=True, ge=1)]], Field(description="Valore per l'header Paging-Page.")] = None,
-        paging_page_size: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Valore per l'header Paging-PageSize.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[RegistroModel]:
-        """Elenco registri
-
-        Ottiene l'elenco dei registri gestiti da un soggetto delegato, filtrati in base ai criteri specificati.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
+        >>> thread = api.soggetto_delegato_num_iscr_ass_registri_get(num_iscr_ass, num_iscr_sito, identificativo_operatore, identificativo, chiuso, paging_page, paging_page_size, async_req=True)
+        >>> result = thread.get()
 
         :param num_iscr_ass: Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione del soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione. (required)
         :type num_iscr_ass: str
@@ -341,86 +212,33 @@ class SoggettoDelegatoApi:
         :type paging_page: int
         :param paging_page_size: Valore per l'header Paging-PageSize.
         :type paging_page_size: int
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: List[RegistroModel]
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the soggetto_delegato_num_iscr_ass_registri_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.soggetto_delegato_num_iscr_ass_registri_get_with_http_info(num_iscr_ass, num_iscr_sito, identificativo_operatore, identificativo, chiuso, paging_page, paging_page_size, **kwargs)  # noqa: E501
 
-        _param = self._soggetto_delegato_num_iscr_ass_registri_get_serialize(
-            num_iscr_ass=num_iscr_ass,
-            num_iscr_sito=num_iscr_sito,
-            identificativo_operatore=identificativo_operatore,
-            identificativo=identificativo,
-            chiuso=chiuso,
-            paging_page=paging_page,
-            paging_page_size=paging_page_size,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
+    @validate_arguments
+    def soggetto_delegato_num_iscr_ass_registri_get_with_http_info(self, num_iscr_ass : Annotated[StrictStr, Field(..., description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione del soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione.")], num_iscr_sito : Annotated[Optional[StrictStr], Field(description="Numero iscrizione unità locale rilasciato all'iscrizione da ricercare.")] = None, identificativo_operatore : Annotated[Optional[StrictStr], Field(description="Codice fiscale dell'operatore da ricercare.")] = None, identificativo : Annotated[Optional[StrictStr], Field(description="Identificativo del registro da ricercare.")] = None, chiuso : Annotated[Optional[StrictBool], Field(description="Flag di chiusura del registro.")] = None, paging_page : Annotated[Optional[conint(strict=True, le=2147483647, ge=1)], Field(description="Valore per l'header Paging-Page.")] = None, paging_page_size : Annotated[Optional[conint(strict=True, le=1000, ge=1)], Field(description="Valore per l'header Paging-PageSize.")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+        """Elenco registri  # noqa: E501
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[RegistroModel]",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
+        Ottiene l'elenco dei registri gestiti da un soggetto delegato, filtrati in base ai criteri specificati.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
 
-
-    @validate_call
-    def soggetto_delegato_num_iscr_ass_registri_get_with_http_info(
-        self,
-        num_iscr_ass: Annotated[StrictStr, Field(description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione del soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione.")],
-        num_iscr_sito: Annotated[Optional[StrictStr], Field(description="Numero iscrizione unità locale rilasciato all'iscrizione da ricercare.")] = None,
-        identificativo_operatore: Annotated[Optional[StrictStr], Field(description="Codice fiscale dell'operatore da ricercare.")] = None,
-        identificativo: Annotated[Optional[StrictStr], Field(description="Identificativo del registro da ricercare.")] = None,
-        chiuso: Annotated[Optional[StrictBool], Field(description="Flag di chiusura del registro.")] = None,
-        paging_page: Annotated[Optional[Annotated[int, Field(le=2147483647, strict=True, ge=1)]], Field(description="Valore per l'header Paging-Page.")] = None,
-        paging_page_size: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Valore per l'header Paging-PageSize.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[RegistroModel]]:
-        """Elenco registri
-
-        Ottiene l'elenco dei registri gestiti da un soggetto delegato, filtrati in base ai criteri specificati.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
+        >>> thread = api.soggetto_delegato_num_iscr_ass_registri_get_with_http_info(num_iscr_ass, num_iscr_sito, identificativo_operatore, identificativo, chiuso, paging_page, paging_page_size, async_req=True)
+        >>> result = thread.get()
 
         :param num_iscr_ass: Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione del soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione. (required)
         :type num_iscr_ass: str
@@ -436,272 +254,141 @@ class SoggettoDelegatoApi:
         :type paging_page: int
         :param paging_page_size: Valore per l'header Paging-PageSize.
         :type paging_page_size: int
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(List[RegistroModel], status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._soggetto_delegato_num_iscr_ass_registri_get_serialize(
-            num_iscr_ass=num_iscr_ass,
-            num_iscr_sito=num_iscr_sito,
-            identificativo_operatore=identificativo_operatore,
-            identificativo=identificativo,
-            chiuso=chiuso,
-            paging_page=paging_page,
-            paging_page_size=paging_page_size,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[RegistroModel]",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def soggetto_delegato_num_iscr_ass_registri_get_without_preload_content(
-        self,
-        num_iscr_ass: Annotated[StrictStr, Field(description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione del soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione.")],
-        num_iscr_sito: Annotated[Optional[StrictStr], Field(description="Numero iscrizione unità locale rilasciato all'iscrizione da ricercare.")] = None,
-        identificativo_operatore: Annotated[Optional[StrictStr], Field(description="Codice fiscale dell'operatore da ricercare.")] = None,
-        identificativo: Annotated[Optional[StrictStr], Field(description="Identificativo del registro da ricercare.")] = None,
-        chiuso: Annotated[Optional[StrictBool], Field(description="Flag di chiusura del registro.")] = None,
-        paging_page: Annotated[Optional[Annotated[int, Field(le=2147483647, strict=True, ge=1)]], Field(description="Valore per l'header Paging-Page.")] = None,
-        paging_page_size: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Valore per l'header Paging-PageSize.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
+        _all_params = [
+            'num_iscr_ass',
+            'num_iscr_sito',
+            'identificativo_operatore',
+            'identificativo',
+            'chiuso',
+            'paging_page',
+            'paging_page_size'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
             ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Elenco registri
-
-        Ottiene l'elenco dei registri gestiti da un soggetto delegato, filtrati in base ai criteri specificati.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
-
-        :param num_iscr_ass: Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione del soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione. (required)
-        :type num_iscr_ass: str
-        :param num_iscr_sito: Numero iscrizione unità locale rilasciato all'iscrizione da ricercare.
-        :type num_iscr_sito: str
-        :param identificativo_operatore: Codice fiscale dell'operatore da ricercare.
-        :type identificativo_operatore: str
-        :param identificativo: Identificativo del registro da ricercare.
-        :type identificativo: str
-        :param chiuso: Flag di chiusura del registro.
-        :type chiuso: bool
-        :param paging_page: Valore per l'header Paging-Page.
-        :type paging_page: int
-        :param paging_page_size: Valore per l'header Paging-PageSize.
-        :type paging_page_size: int
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_num_iscr_ass_registri_get_serialize(
-            num_iscr_ass=num_iscr_ass,
-            num_iscr_sito=num_iscr_sito,
-            identificativo_operatore=identificativo_operatore,
-            identificativo=identificativo,
-            chiuso=chiuso,
-            paging_page=paging_page,
-            paging_page_size=paging_page_size,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[RegistroModel]",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method soggetto_delegato_num_iscr_ass_registri_get" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-    def _soggetto_delegato_num_iscr_ass_registri_get_serialize(
-        self,
-        num_iscr_ass,
-        num_iscr_sito,
-        identificativo_operatore,
-        identificativo,
-        chiuso,
-        paging_page,
-        paging_page_size,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
-        if num_iscr_ass is not None:
-            _path_params['num_iscr_ass'] = num_iscr_ass
+        _path_params = {}
+        if _params['num_iscr_ass'] is not None:
+            _path_params['num_iscr_ass'] = _params['num_iscr_ass']
+
+
         # process the query parameters
-        if num_iscr_sito is not None:
-            
-            _query_params.append(('num_iscr_sito', num_iscr_sito))
-            
-        if identificativo_operatore is not None:
-            
-            _query_params.append(('identificativo_operatore', identificativo_operatore))
-            
-        if identificativo is not None:
-            
-            _query_params.append(('identificativo', identificativo))
-            
-        if chiuso is not None:
-            
-            _query_params.append(('chiuso', chiuso))
-            
+        _query_params = []
+        if _params.get('num_iscr_sito') is not None:  # noqa: E501
+            _query_params.append(('num_iscr_sito', _params['num_iscr_sito']))
+
+        if _params.get('identificativo_operatore') is not None:  # noqa: E501
+            _query_params.append(('identificativo_operatore', _params['identificativo_operatore']))
+
+        if _params.get('identificativo') is not None:  # noqa: E501
+            _query_params.append(('identificativo', _params['identificativo']))
+
+        if _params.get('chiuso') is not None:  # noqa: E501
+            _query_params.append(('chiuso', _params['chiuso']))
+
         # process the header parameters
-        if paging_page is not None:
-            _header_params['Paging-Page'] = paging_page
-        if paging_page_size is not None:
-            _header_params['Paging-PageSize'] = paging_page_size
+        _header_params = dict(_params.get('_headers', {}))
+        if _params['paging_page'] is not None:
+            _header_params['Paging-Page'] = _params['paging_page']
+
+        if _params['paging_page_size'] is not None:
+            _header_params['Paging-PageSize'] = _params['paging_page_size']
+
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-
-
+        _body_params = None
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json', 
-                    'application/problem+json'
-                ]
-            )
-
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json', 'application/problem+json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'Bearer'
-        ]
+        _auth_settings = ['Bearer']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/soggetto-delegato/{num_iscr_ass}/registri',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '200': "List[RegistroModel]",
+            '403': None,
+            '404': None,
+            '429': None,
+            '500': "ProblemDetails",
+        }
+
+        return self.api_client.call_api(
+            '/soggetto-delegato/{num_iscr_ass}/registri', 'GET',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
+            _request_auth=_params.get('_request_auth'))
 
+    @validate_arguments
+    def soggetto_delegato_num_iscr_ass_siti_get(self, num_iscr_ass : Annotated[StrictStr, Field(..., description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione")], provincia_id : Annotated[Optional[StrictStr], Field(description="Ricerca per provincia")] = None, comune_id : Annotated[Optional[StrictStr], Field(description="Ricerca per comune")] = None, num_iscr_sito : Annotated[Optional[StrictStr], Field(description="Ricerca per Numero iscrizione unità locale rilasciato all'iscrizione. Per recuperare l'identificativo attribuito all'unità locale consultare l'operazione Elenco Unità Locali iscritte nell'area riservata Operatori dove è presente la voce Numero iscrizione unità locale")] = None, num_iscr_siti : Annotated[Optional[conlist(StrictStr)], Field(description="Ricerca per Numero iscrizione unità locali")] = None, nome_sito : Annotated[Optional[StrictStr], Field(description="Ricerca per nome unità locale")] = None, stato_delega_da_confermare : Annotated[Optional[StrictBool], Field(description="Stato delega da confermare")] = None, delega_da_associazione : Annotated[Optional[StrictBool], Field(description="Filtra le unità locali iscritte dal soggetto delegato")] = None, stato_delega : Annotated[Optional[Any], Field(description="Stato della delega")] = None, paging_page : Annotated[Optional[conint(strict=True, le=2147483647, ge=1)], Field(description="Valore per l'header Paging-Page.")] = None, paging_page_size : Annotated[Optional[conint(strict=True, le=1000, ge=1)], Field(description="Valore per l'header Paging-PageSize.")] = None, **kwargs) -> List[SitoModel]:  # noqa: E501
+        """Elenco unità locali  # noqa: E501
 
+        Ottiene l'elenco delle unità locali per cui ha delega il soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
 
-
-    @validate_call
-    def soggetto_delegato_num_iscr_ass_siti_get(
-        self,
-        num_iscr_ass: Annotated[StrictStr, Field(description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione")],
-        provincia_id: Annotated[Optional[StrictStr], Field(description="Ricerca per provincia")] = None,
-        comune_id: Annotated[Optional[StrictStr], Field(description="Ricerca per comune")] = None,
-        num_iscr_sito: Annotated[Optional[StrictStr], Field(description="Ricerca per Numero iscrizione unità locale rilasciato all'iscrizione. Per recuperare l'identificativo attribuito all'unità locale consultare l'operazione Elenco Unità Locali iscritte nell'area riservata Operatori dove è presente la voce Numero iscrizione unità locale")] = None,
-        num_iscr_siti: Annotated[Optional[List[StrictStr]], Field(description="Ricerca per Numero iscrizione unità locali")] = None,
-        nome_sito: Annotated[Optional[StrictStr], Field(description="Ricerca per nome unità locale")] = None,
-        stato_delega_da_confermare: Annotated[Optional[StrictBool], Field(description="Stato delega da confermare")] = None,
-        delega_da_associazione: Annotated[Optional[StrictBool], Field(description="Filtra le unità locali iscritte dal soggetto delegato")] = None,
-        stato_delega: Annotated[Optional[Any], Field(description="Stato della delega")] = None,
-        paging_page: Annotated[Optional[Annotated[int, Field(le=2147483647, strict=True, ge=1)]], Field(description="Valore per l'header Paging-Page.")] = None,
-        paging_page_size: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Valore per l'header Paging-PageSize.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> List[SitoModel]:
-        """Elenco unità locali
-
-        Ottiene l'elenco delle unità locali per cui ha delega il soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
+        >>> thread = api.soggetto_delegato_num_iscr_ass_siti_get(num_iscr_ass, provincia_id, comune_id, num_iscr_sito, num_iscr_siti, nome_sito, stato_delega_da_confermare, delega_da_associazione, stato_delega, paging_page, paging_page_size, async_req=True)
+        >>> result = thread.get()
 
         :param num_iscr_ass: Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione (required)
         :type num_iscr_ass: str
@@ -725,94 +412,33 @@ class SoggettoDelegatoApi:
         :type paging_page: int
         :param paging_page_size: Valore per l'header Paging-PageSize.
         :type paging_page_size: int
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: List[SitoModel]
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the soggetto_delegato_num_iscr_ass_siti_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.soggetto_delegato_num_iscr_ass_siti_get_with_http_info(num_iscr_ass, provincia_id, comune_id, num_iscr_sito, num_iscr_siti, nome_sito, stato_delega_da_confermare, delega_da_associazione, stato_delega, paging_page, paging_page_size, **kwargs)  # noqa: E501
 
-        _param = self._soggetto_delegato_num_iscr_ass_siti_get_serialize(
-            num_iscr_ass=num_iscr_ass,
-            provincia_id=provincia_id,
-            comune_id=comune_id,
-            num_iscr_sito=num_iscr_sito,
-            num_iscr_siti=num_iscr_siti,
-            nome_sito=nome_sito,
-            stato_delega_da_confermare=stato_delega_da_confermare,
-            delega_da_associazione=delega_da_associazione,
-            stato_delega=stato_delega,
-            paging_page=paging_page,
-            paging_page_size=paging_page_size,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
+    @validate_arguments
+    def soggetto_delegato_num_iscr_ass_siti_get_with_http_info(self, num_iscr_ass : Annotated[StrictStr, Field(..., description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione")], provincia_id : Annotated[Optional[StrictStr], Field(description="Ricerca per provincia")] = None, comune_id : Annotated[Optional[StrictStr], Field(description="Ricerca per comune")] = None, num_iscr_sito : Annotated[Optional[StrictStr], Field(description="Ricerca per Numero iscrizione unità locale rilasciato all'iscrizione. Per recuperare l'identificativo attribuito all'unità locale consultare l'operazione Elenco Unità Locali iscritte nell'area riservata Operatori dove è presente la voce Numero iscrizione unità locale")] = None, num_iscr_siti : Annotated[Optional[conlist(StrictStr)], Field(description="Ricerca per Numero iscrizione unità locali")] = None, nome_sito : Annotated[Optional[StrictStr], Field(description="Ricerca per nome unità locale")] = None, stato_delega_da_confermare : Annotated[Optional[StrictBool], Field(description="Stato delega da confermare")] = None, delega_da_associazione : Annotated[Optional[StrictBool], Field(description="Filtra le unità locali iscritte dal soggetto delegato")] = None, stato_delega : Annotated[Optional[Any], Field(description="Stato della delega")] = None, paging_page : Annotated[Optional[conint(strict=True, le=2147483647, ge=1)], Field(description="Valore per l'header Paging-Page.")] = None, paging_page_size : Annotated[Optional[conint(strict=True, le=1000, ge=1)], Field(description="Valore per l'header Paging-PageSize.")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+        """Elenco unità locali  # noqa: E501
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[SitoModel]",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
+        Ottiene l'elenco delle unità locali per cui ha delega il soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
 
-
-    @validate_call
-    def soggetto_delegato_num_iscr_ass_siti_get_with_http_info(
-        self,
-        num_iscr_ass: Annotated[StrictStr, Field(description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione")],
-        provincia_id: Annotated[Optional[StrictStr], Field(description="Ricerca per provincia")] = None,
-        comune_id: Annotated[Optional[StrictStr], Field(description="Ricerca per comune")] = None,
-        num_iscr_sito: Annotated[Optional[StrictStr], Field(description="Ricerca per Numero iscrizione unità locale rilasciato all'iscrizione. Per recuperare l'identificativo attribuito all'unità locale consultare l'operazione Elenco Unità Locali iscritte nell'area riservata Operatori dove è presente la voce Numero iscrizione unità locale")] = None,
-        num_iscr_siti: Annotated[Optional[List[StrictStr]], Field(description="Ricerca per Numero iscrizione unità locali")] = None,
-        nome_sito: Annotated[Optional[StrictStr], Field(description="Ricerca per nome unità locale")] = None,
-        stato_delega_da_confermare: Annotated[Optional[StrictBool], Field(description="Stato delega da confermare")] = None,
-        delega_da_associazione: Annotated[Optional[StrictBool], Field(description="Filtra le unità locali iscritte dal soggetto delegato")] = None,
-        stato_delega: Annotated[Optional[Any], Field(description="Stato della delega")] = None,
-        paging_page: Annotated[Optional[Annotated[int, Field(le=2147483647, strict=True, ge=1)]], Field(description="Valore per l'header Paging-Page.")] = None,
-        paging_page_size: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Valore per l'header Paging-PageSize.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[List[SitoModel]]:
-        """Elenco unità locali
-
-        Ottiene l'elenco delle unità locali per cui ha delega il soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
+        >>> thread = api.soggetto_delegato_num_iscr_ass_siti_get_with_http_info(num_iscr_ass, provincia_id, comune_id, num_iscr_sito, num_iscr_siti, nome_sito, stato_delega_da_confermare, delega_da_associazione, stato_delega, paging_page, paging_page_size, async_req=True)
+        >>> result = thread.get()
 
         :param num_iscr_ass: Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione (required)
         :type num_iscr_ass: str
@@ -836,1986 +462,1034 @@ class SoggettoDelegatoApi:
         :type paging_page: int
         :param paging_page_size: Valore per l'header Paging-PageSize.
         :type paging_page_size: int
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(List[SitoModel], status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._soggetto_delegato_num_iscr_ass_siti_get_serialize(
-            num_iscr_ass=num_iscr_ass,
-            provincia_id=provincia_id,
-            comune_id=comune_id,
-            num_iscr_sito=num_iscr_sito,
-            num_iscr_siti=num_iscr_siti,
-            nome_sito=nome_sito,
-            stato_delega_da_confermare=stato_delega_da_confermare,
-            delega_da_associazione=delega_da_associazione,
-            stato_delega=stato_delega,
-            paging_page=paging_page,
-            paging_page_size=paging_page_size,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
+        _params = locals()
+
+        _all_params = [
+            'num_iscr_ass',
+            'provincia_id',
+            'comune_id',
+            'num_iscr_sito',
+            'num_iscr_siti',
+            'nome_sito',
+            'stato_delega_da_confermare',
+            'delega_da_associazione',
+            'stato_delega',
+            'paging_page',
+            'paging_page_size'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
+            ]
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method soggetto_delegato_num_iscr_ass_siti_get" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
+
+        _collection_formats = {}
+
+        # process the path parameters
+        _path_params = {}
+        if _params['num_iscr_ass'] is not None:
+            _path_params['num_iscr_ass'] = _params['num_iscr_ass']
+
+
+        # process the query parameters
+        _query_params = []
+        if _params.get('provincia_id') is not None:  # noqa: E501
+            _query_params.append(('provincia_id', _params['provincia_id']))
+
+        if _params.get('comune_id') is not None:  # noqa: E501
+            _query_params.append(('comune_id', _params['comune_id']))
+
+        if _params.get('num_iscr_sito') is not None:  # noqa: E501
+            _query_params.append(('num_iscr_sito', _params['num_iscr_sito']))
+
+        if _params.get('num_iscr_siti') is not None:  # noqa: E501
+            _query_params.append(('num_iscr_siti', _params['num_iscr_siti']))
+            _collection_formats['num_iscr_siti'] = 'multi'
+
+        if _params.get('nome_sito') is not None:  # noqa: E501
+            _query_params.append(('nome_sito', _params['nome_sito']))
+
+        if _params.get('stato_delega_da_confermare') is not None:  # noqa: E501
+            _query_params.append(('stato_delega_da_confermare', _params['stato_delega_da_confermare']))
+
+        if _params.get('delega_da_associazione') is not None:  # noqa: E501
+            _query_params.append(('delega_da_associazione', _params['delega_da_associazione']))
+
+        if _params.get('stato_delega') is not None:  # noqa: E501
+            _query_params.append(('stato_delega', _params['stato_delega'].value))
+
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        if _params['paging_page'] is not None:
+            _header_params['Paging-Page'] = _params['paging_page']
+
+        if _params['paging_page_size'] is not None:
+            _header_params['Paging-PageSize'] = _params['paging_page_size']
+
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json', 'application/problem+json'])  # noqa: E501
+
+        # authentication setting
+        _auth_settings = ['Bearer']  # noqa: E501
+
+        _response_types_map = {
             '200': "List[SitoModel]",
             '403': None,
             '404': None,
             '429': None,
             '500': "ProblemDetails",
         }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
 
-
-    @validate_call
-    def soggetto_delegato_num_iscr_ass_siti_get_without_preload_content(
-        self,
-        num_iscr_ass: Annotated[StrictStr, Field(description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione")],
-        provincia_id: Annotated[Optional[StrictStr], Field(description="Ricerca per provincia")] = None,
-        comune_id: Annotated[Optional[StrictStr], Field(description="Ricerca per comune")] = None,
-        num_iscr_sito: Annotated[Optional[StrictStr], Field(description="Ricerca per Numero iscrizione unità locale rilasciato all'iscrizione. Per recuperare l'identificativo attribuito all'unità locale consultare l'operazione Elenco Unità Locali iscritte nell'area riservata Operatori dove è presente la voce Numero iscrizione unità locale")] = None,
-        num_iscr_siti: Annotated[Optional[List[StrictStr]], Field(description="Ricerca per Numero iscrizione unità locali")] = None,
-        nome_sito: Annotated[Optional[StrictStr], Field(description="Ricerca per nome unità locale")] = None,
-        stato_delega_da_confermare: Annotated[Optional[StrictBool], Field(description="Stato delega da confermare")] = None,
-        delega_da_associazione: Annotated[Optional[StrictBool], Field(description="Filtra le unità locali iscritte dal soggetto delegato")] = None,
-        stato_delega: Annotated[Optional[Any], Field(description="Stato della delega")] = None,
-        paging_page: Annotated[Optional[Annotated[int, Field(le=2147483647, strict=True, ge=1)]], Field(description="Valore per l'header Paging-Page.")] = None,
-        paging_page_size: Annotated[Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]], Field(description="Valore per l'header Paging-PageSize.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Elenco unità locali
-
-        Ottiene l'elenco delle unità locali per cui ha delega il soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
-
-        :param num_iscr_ass: Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione (required)
-        :type num_iscr_ass: str
-        :param provincia_id: Ricerca per provincia
-        :type provincia_id: str
-        :param comune_id: Ricerca per comune
-        :type comune_id: str
-        :param num_iscr_sito: Ricerca per Numero iscrizione unità locale rilasciato all'iscrizione. Per recuperare l'identificativo attribuito all'unità locale consultare l'operazione Elenco Unità Locali iscritte nell'area riservata Operatori dove è presente la voce Numero iscrizione unità locale
-        :type num_iscr_sito: str
-        :param num_iscr_siti: Ricerca per Numero iscrizione unità locali
-        :type num_iscr_siti: List[str]
-        :param nome_sito: Ricerca per nome unità locale
-        :type nome_sito: str
-        :param stato_delega_da_confermare: Stato delega da confermare
-        :type stato_delega_da_confermare: bool
-        :param delega_da_associazione: Filtra le unità locali iscritte dal soggetto delegato
-        :type delega_da_associazione: bool
-        :param stato_delega: Stato della delega
-        :type stato_delega: Stati
-        :param paging_page: Valore per l'header Paging-Page.
-        :type paging_page: int
-        :param paging_page_size: Valore per l'header Paging-PageSize.
-        :type paging_page_size: int
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_num_iscr_ass_siti_get_serialize(
-            num_iscr_ass=num_iscr_ass,
-            provincia_id=provincia_id,
-            comune_id=comune_id,
-            num_iscr_sito=num_iscr_sito,
-            num_iscr_siti=num_iscr_siti,
-            nome_sito=nome_sito,
-            stato_delega_da_confermare=stato_delega_da_confermare,
-            delega_da_associazione=delega_da_associazione,
-            stato_delega=stato_delega,
-            paging_page=paging_page,
-            paging_page_size=paging_page_size,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "List[SitoModel]",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _soggetto_delegato_num_iscr_ass_siti_get_serialize(
-        self,
-        num_iscr_ass,
-        provincia_id,
-        comune_id,
-        num_iscr_sito,
-        num_iscr_siti,
-        nome_sito,
-        stato_delega_da_confermare,
-        delega_da_associazione,
-        stato_delega,
-        paging_page,
-        paging_page_size,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-            'num_iscr_siti': 'multi',
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if num_iscr_ass is not None:
-            _path_params['num_iscr_ass'] = num_iscr_ass
-        # process the query parameters
-        if provincia_id is not None:
-            
-            _query_params.append(('provincia_id', provincia_id))
-            
-        if comune_id is not None:
-            
-            _query_params.append(('comune_id', comune_id))
-            
-        if num_iscr_sito is not None:
-            
-            _query_params.append(('num_iscr_sito', num_iscr_sito))
-            
-        if num_iscr_siti is not None:
-            
-            _query_params.append(('num_iscr_siti', num_iscr_siti))
-            
-        if nome_sito is not None:
-            
-            _query_params.append(('nome_sito', nome_sito))
-            
-        if stato_delega_da_confermare is not None:
-            
-            _query_params.append(('stato_delega_da_confermare', stato_delega_da_confermare))
-            
-        if delega_da_associazione is not None:
-            
-            _query_params.append(('delega_da_associazione', delega_da_associazione))
-            
-        if stato_delega is not None:
-            
-            _query_params.append(('stato_delega', stato_delega.value))
-            
-        # process the header parameters
-        if paging_page is not None:
-            _header_params['Paging-Page'] = paging_page
-        if paging_page_size is not None:
-            _header_params['Paging-PageSize'] = paging_page_size
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json', 
-                    'application/problem+json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'Bearer'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/soggetto-delegato/{num_iscr_ass}/siti',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        return self.api_client.call_api(
+            '/soggetto-delegato/{num_iscr_ass}/siti', 'GET',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
+            _request_auth=_params.get('_request_auth'))
 
+    @validate_arguments
+    def soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get(self, num_iscr_ass : Annotated[StrictStr, Field(..., description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione")], num_iscr_sito : Annotated[StrictStr, Field(..., description="Numero iscrizione unità locale rilasciato all'iscrizione.")], **kwargs) -> SitoModel:  # noqa: E501
+        """Ottiene il dettaglio dell'unità locale per cui ha delega il soggetto delegato.  # noqa: E501
 
+        Ottiene il dettaglio dell'unità locale per cui ha delega il soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
 
-
-    @validate_call
-    def soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get(
-        self,
-        num_iscr_ass: Annotated[StrictStr, Field(description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione")],
-        num_iscr_sito: Annotated[StrictStr, Field(description="Numero iscrizione unità locale rilasciato all'iscrizione.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> SitoModel:
-        """Ottiene il dettaglio dell'unità locale per cui ha delega il soggetto delegato.
-
-        Ottiene il dettaglio dell'unità locale per cui ha delega il soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
+        >>> thread = api.soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get(num_iscr_ass, num_iscr_sito, async_req=True)
+        >>> result = thread.get()
 
         :param num_iscr_ass: Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione (required)
         :type num_iscr_ass: str
         :param num_iscr_sito: Numero iscrizione unità locale rilasciato all'iscrizione. (required)
         :type num_iscr_sito: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: SitoModel
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get_with_http_info(num_iscr_ass, num_iscr_sito, **kwargs)  # noqa: E501
+
+    @validate_arguments
+    def soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get_with_http_info(self, num_iscr_ass : Annotated[StrictStr, Field(..., description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione")], num_iscr_sito : Annotated[StrictStr, Field(..., description="Numero iscrizione unità locale rilasciato all'iscrizione.")], **kwargs) -> ApiResponse:  # noqa: E501
+        """Ottiene il dettaglio dell'unità locale per cui ha delega il soggetto delegato.  # noqa: E501
+
+        Ottiene il dettaglio dell'unità locale per cui ha delega il soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get_with_http_info(num_iscr_ass, num_iscr_sito, async_req=True)
+        >>> result = thread.get()
+
+        :param num_iscr_ass: Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione (required)
+        :type num_iscr_ass: str
+        :param num_iscr_sito: Numero iscrizione unità locale rilasciato all'iscrizione. (required)
+        :type num_iscr_sito: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(SitoModel, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get_serialize(
-            num_iscr_ass=num_iscr_ass,
-            num_iscr_sito=num_iscr_sito,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
+        _params = locals()
+
+        _all_params = [
+            'num_iscr_ass',
+            'num_iscr_sito'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
+            ]
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
+
+        _collection_formats = {}
+
+        # process the path parameters
+        _path_params = {}
+        if _params['num_iscr_ass'] is not None:
+            _path_params['num_iscr_ass'] = _params['num_iscr_ass']
+
+        if _params['num_iscr_sito'] is not None:
+            _path_params['num_iscr_sito'] = _params['num_iscr_sito']
+
+
+        # process the query parameters
+        _query_params = []
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json', 'application/problem+json'])  # noqa: E501
+
+        # authentication setting
+        _auth_settings = ['Bearer']  # noqa: E501
+
+        _response_types_map = {
             '200': "SitoModel",
             '403': None,
             '404': None,
             '429': None,
             '500': "ProblemDetails",
         }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
 
-
-    @validate_call
-    def soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get_with_http_info(
-        self,
-        num_iscr_ass: Annotated[StrictStr, Field(description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione")],
-        num_iscr_sito: Annotated[StrictStr, Field(description="Numero iscrizione unità locale rilasciato all'iscrizione.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[SitoModel]:
-        """Ottiene il dettaglio dell'unità locale per cui ha delega il soggetto delegato.
-
-        Ottiene il dettaglio dell'unità locale per cui ha delega il soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
-
-        :param num_iscr_ass: Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione (required)
-        :type num_iscr_ass: str
-        :param num_iscr_sito: Numero iscrizione unità locale rilasciato all'iscrizione. (required)
-        :type num_iscr_sito: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get_serialize(
-            num_iscr_ass=num_iscr_ass,
-            num_iscr_sito=num_iscr_sito,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "SitoModel",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get_without_preload_content(
-        self,
-        num_iscr_ass: Annotated[StrictStr, Field(description="Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione")],
-        num_iscr_sito: Annotated[StrictStr, Field(description="Numero iscrizione unità locale rilasciato all'iscrizione.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Ottiene il dettaglio dell'unità locale per cui ha delega il soggetto delegato.
-
-        Ottiene il dettaglio dell'unità locale per cui ha delega il soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
-
-        :param num_iscr_ass: Numero iscrizione soggetto delegato rilasciato all'iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l'operazione Elenco soggetti delegati iscritti nell'area riservata Soggetti delegati dove è presente la voce Numero iscrizione (required)
-        :type num_iscr_ass: str
-        :param num_iscr_sito: Numero iscrizione unità locale rilasciato all'iscrizione. (required)
-        :type num_iscr_sito: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get_serialize(
-            num_iscr_ass=num_iscr_ass,
-            num_iscr_sito=num_iscr_sito,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "SitoModel",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _soggetto_delegato_num_iscr_ass_siti_num_iscr_sito_get_serialize(
-        self,
-        num_iscr_ass,
-        num_iscr_sito,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if num_iscr_ass is not None:
-            _path_params['num_iscr_ass'] = num_iscr_ass
-        if num_iscr_sito is not None:
-            _path_params['num_iscr_sito'] = num_iscr_sito
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json', 
-                    'application/problem+json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'Bearer'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/soggetto-delegato/{num_iscr_ass}/siti/{num_iscr_sito}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        return self.api_client.call_api(
+            '/soggetto-delegato/{num_iscr_ass}/siti/{num_iscr_sito}', 'GET',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
+            _request_auth=_params.get('_request_auth'))
 
+    @validate_arguments
+    def soggetto_delegato_registri_identificativo_delete(self, identificativo : Annotated[StrictStr, Field(..., description="Identificativo del registro da chiudere.")], **kwargs) -> None:  # noqa: E501
+        """Chiudi registro  # noqa: E501
 
+        Chiude un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
 
-
-    @validate_call
-    def soggetto_delegato_registri_identificativo_delete(
-        self,
-        identificativo: Annotated[StrictStr, Field(description="Identificativo del registro da chiudere.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> None:
-        """Chiudi registro
-
-        Chiude un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>
+        >>> thread = api.soggetto_delegato_registri_identificativo_delete(identificativo, async_req=True)
+        >>> result = thread.get()
 
         :param identificativo: Identificativo del registro da chiudere. (required)
         :type identificativo: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: None
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the soggetto_delegato_registri_identificativo_delete_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.soggetto_delegato_registri_identificativo_delete_with_http_info(identificativo, **kwargs)  # noqa: E501
+
+    @validate_arguments
+    def soggetto_delegato_registri_identificativo_delete_with_http_info(self, identificativo : Annotated[StrictStr, Field(..., description="Identificativo del registro da chiudere.")], **kwargs) -> ApiResponse:  # noqa: E501
+        """Chiudi registro  # noqa: E501
+
+        Chiude un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.soggetto_delegato_registri_identificativo_delete_with_http_info(identificativo, async_req=True)
+        >>> result = thread.get()
+
+        :param identificativo: Identificativo del registro da chiudere. (required)
+        :type identificativo: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: None
+        """
 
-        _param = self._soggetto_delegato_registri_identificativo_delete_serialize(
-            identificativo=identificativo,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
-            '400': "ProblemDetails",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def soggetto_delegato_registri_identificativo_delete_with_http_info(
-        self,
-        identificativo: Annotated[StrictStr, Field(description="Identificativo del registro da chiudere.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
+        _all_params = [
+            'identificativo'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
             ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[None]:
-        """Chiudi registro
-
-        Chiude un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>
-
-        :param identificativo: Identificativo del registro da chiudere. (required)
-        :type identificativo: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_registri_identificativo_delete_serialize(
-            identificativo=identificativo,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
-            '400': "ProblemDetails",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method soggetto_delegato_registri_identificativo_delete" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-    @validate_call
-    def soggetto_delegato_registri_identificativo_delete_without_preload_content(
-        self,
-        identificativo: Annotated[StrictStr, Field(description="Identificativo del registro da chiudere.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Chiudi registro
-
-        Chiude un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>
-
-        :param identificativo: Identificativo del registro da chiudere. (required)
-        :type identificativo: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_registri_identificativo_delete_serialize(
-            identificativo=identificativo,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': None,
-            '400': "ProblemDetails",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _soggetto_delegato_registri_identificativo_delete_serialize(
-        self,
-        identificativo,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
-        if identificativo is not None:
-            _path_params['identificativo'] = identificativo
+        _path_params = {}
+        if _params['identificativo'] is not None:
+            _path_params['identificativo'] = _params['identificativo']
+
+
         # process the query parameters
+        _query_params = []
         # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
         # process the form parameters
+        _form_params = []
+        _files = {}
         # process the body parameter
-
-
+        _body_params = None
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/problem+json'
-                ]
-            )
-
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/problem+json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'Bearer'
-        ]
+        _auth_settings = ['Bearer']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='DELETE',
-            resource_path='/soggetto-delegato/registri/{identificativo}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {}
+
+        return self.api_client.call_api(
+            '/soggetto-delegato/registri/{identificativo}', 'DELETE',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
+            _request_auth=_params.get('_request_auth'))
 
+    @validate_arguments
+    def soggetto_delegato_registri_identificativo_get(self, identificativo : Annotated[StrictStr, Field(..., description="Identificativo del registro.")], **kwargs) -> RegistroModel:  # noqa: E501
+        """Dati registro  # noqa: E501
 
+        Ottiene il dettaglio di un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
 
-
-    @validate_call
-    def soggetto_delegato_registri_identificativo_get(
-        self,
-        identificativo: Annotated[StrictStr, Field(description="Identificativo del registro.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RegistroModel:
-        """Dati registro
-
-        Ottiene il dettaglio di un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
+        >>> thread = api.soggetto_delegato_registri_identificativo_get(identificativo, async_req=True)
+        >>> result = thread.get()
 
         :param identificativo: Identificativo del registro. (required)
         :type identificativo: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: RegistroModel
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the soggetto_delegato_registri_identificativo_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.soggetto_delegato_registri_identificativo_get_with_http_info(identificativo, **kwargs)  # noqa: E501
+
+    @validate_arguments
+    def soggetto_delegato_registri_identificativo_get_with_http_info(self, identificativo : Annotated[StrictStr, Field(..., description="Identificativo del registro.")], **kwargs) -> ApiResponse:  # noqa: E501
+        """Dati registro  # noqa: E501
+
+        Ottiene il dettaglio di un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.soggetto_delegato_registri_identificativo_get_with_http_info(identificativo, async_req=True)
+        >>> result = thread.get()
+
+        :param identificativo: Identificativo del registro. (required)
+        :type identificativo: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(RegistroModel, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._soggetto_delegato_registri_identificativo_get_serialize(
-            identificativo=identificativo,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
+        _params = locals()
+
+        _all_params = [
+            'identificativo'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
+            ]
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method soggetto_delegato_registri_identificativo_get" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
+
+        _collection_formats = {}
+
+        # process the path parameters
+        _path_params = {}
+        if _params['identificativo'] is not None:
+            _path_params['identificativo'] = _params['identificativo']
+
+
+        # process the query parameters
+        _query_params = []
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json', 'application/problem+json'])  # noqa: E501
+
+        # authentication setting
+        _auth_settings = ['Bearer']  # noqa: E501
+
+        _response_types_map = {
             '200': "RegistroModel",
             '403': None,
             '404': None,
             '429': None,
             '500': "ProblemDetails",
         }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
 
-
-    @validate_call
-    def soggetto_delegato_registri_identificativo_get_with_http_info(
-        self,
-        identificativo: Annotated[StrictStr, Field(description="Identificativo del registro.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[RegistroModel]:
-        """Dati registro
-
-        Ottiene il dettaglio di un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
-
-        :param identificativo: Identificativo del registro. (required)
-        :type identificativo: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_registri_identificativo_get_serialize(
-            identificativo=identificativo,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "RegistroModel",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def soggetto_delegato_registri_identificativo_get_without_preload_content(
-        self,
-        identificativo: Annotated[StrictStr, Field(description="Identificativo del registro.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Dati registro
-
-        Ottiene il dettaglio di un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
-
-        :param identificativo: Identificativo del registro. (required)
-        :type identificativo: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_registri_identificativo_get_serialize(
-            identificativo=identificativo,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "RegistroModel",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _soggetto_delegato_registri_identificativo_get_serialize(
-        self,
-        identificativo,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if identificativo is not None:
-            _path_params['identificativo'] = identificativo
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json', 
-                    'application/problem+json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'Bearer'
-        ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/soggetto-delegato/registri/{identificativo}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        return self.api_client.call_api(
+            '/soggetto-delegato/registri/{identificativo}', 'GET',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
+            _request_auth=_params.get('_request_auth'))
 
+    @validate_arguments
+    def soggetto_delegato_registri_identificativo_put(self, identificativo : Annotated[StrictStr, Field(..., description="Identificativo del registro da chiudere.")], update_registro_request : Annotated[Optional[UpdateRegistroRequest], Field(description="Dati di modifica del registro.")] = None, **kwargs) -> UpdateRegistroResponse:  # noqa: E501
+        """Modifica registro  # noqa: E501
 
+        Modifica un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
 
-
-    @validate_call
-    def soggetto_delegato_registri_identificativo_put(
-        self,
-        identificativo: Annotated[StrictStr, Field(description="Identificativo del registro da chiudere.")],
-        update_registro_request: Annotated[Optional[UpdateRegistroRequest], Field(description="Dati di modifica del registro.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> UpdateRegistroResponse:
-        """Modifica registro
-
-        Modifica un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>
+        >>> thread = api.soggetto_delegato_registri_identificativo_put(identificativo, update_registro_request, async_req=True)
+        >>> result = thread.get()
 
         :param identificativo: Identificativo del registro da chiudere. (required)
         :type identificativo: str
         :param update_registro_request: Dati di modifica del registro.
         :type update_registro_request: UpdateRegistroRequest
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: UpdateRegistroResponse
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the soggetto_delegato_registri_identificativo_put_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.soggetto_delegato_registri_identificativo_put_with_http_info(identificativo, update_registro_request, **kwargs)  # noqa: E501
 
-        _param = self._soggetto_delegato_registri_identificativo_put_serialize(
-            identificativo=identificativo,
-            update_registro_request=update_registro_request,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
+    @validate_arguments
+    def soggetto_delegato_registri_identificativo_put_with_http_info(self, identificativo : Annotated[StrictStr, Field(..., description="Identificativo del registro da chiudere.")], update_registro_request : Annotated[Optional[UpdateRegistroRequest], Field(description="Dati di modifica del registro.")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+        """Modifica registro  # noqa: E501
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "UpdateRegistroResponse",
-            '400': "ProblemDetails",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
+        Modifica un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
 
-
-    @validate_call
-    def soggetto_delegato_registri_identificativo_put_with_http_info(
-        self,
-        identificativo: Annotated[StrictStr, Field(description="Identificativo del registro da chiudere.")],
-        update_registro_request: Annotated[Optional[UpdateRegistroRequest], Field(description="Dati di modifica del registro.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[UpdateRegistroResponse]:
-        """Modifica registro
-
-        Modifica un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>
+        >>> thread = api.soggetto_delegato_registri_identificativo_put_with_http_info(identificativo, update_registro_request, async_req=True)
+        >>> result = thread.get()
 
         :param identificativo: Identificativo del registro da chiudere. (required)
         :type identificativo: str
         :param update_registro_request: Dati di modifica del registro.
         :type update_registro_request: UpdateRegistroRequest
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(UpdateRegistroResponse, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._soggetto_delegato_registri_identificativo_put_serialize(
-            identificativo=identificativo,
-            update_registro_request=update_registro_request,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "UpdateRegistroResponse",
-            '400': "ProblemDetails",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def soggetto_delegato_registri_identificativo_put_without_preload_content(
-        self,
-        identificativo: Annotated[StrictStr, Field(description="Identificativo del registro da chiudere.")],
-        update_registro_request: Annotated[Optional[UpdateRegistroRequest], Field(description="Dati di modifica del registro.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
+        _all_params = [
+            'identificativo',
+            'update_registro_request'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
             ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Modifica registro
-
-        Modifica un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>
-
-        :param identificativo: Identificativo del registro da chiudere. (required)
-        :type identificativo: str
-        :param update_registro_request: Dati di modifica del registro.
-        :type update_registro_request: UpdateRegistroRequest
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_registri_identificativo_put_serialize(
-            identificativo=identificativo,
-            update_registro_request=update_registro_request,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "UpdateRegistroResponse",
-            '400': "ProblemDetails",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method soggetto_delegato_registri_identificativo_put" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-    def _soggetto_delegato_registri_identificativo_put_serialize(
-        self,
-        identificativo,
-        update_registro_request,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
-        if identificativo is not None:
-            _path_params['identificativo'] = identificativo
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-        if update_registro_request is not None:
-            _body_params = update_registro_request
+        _path_params = {}
+        if _params['identificativo'] is not None:
+            _path_params['identificativo'] = _params['identificativo']
 
+
+        # process the query parameters
+        _query_params = []
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
+        if _params['update_registro_request'] is not None:
+            _body_params = _params['update_registro_request']
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json', 
-                    'application/problem+json'
-                ]
-            )
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json', 'application/problem+json'])  # noqa: E501
 
         # set the HTTP header `Content-Type`
-        if _content_type:
-            _header_params['Content-Type'] = _content_type
-        else:
-            _default_content_type = (
-                self.api_client.select_header_content_type(
-                    [
-                        'application/json'
-                    ]
+        _content_types_list = _params.get('_content_type',
+            self.api_client.select_header_content_type(
+                ['application/json']))
+        if _content_types_list:
+                _header_params['Content-Type'] = _content_types_list
+
+        # authentication setting
+        _auth_settings = ['Bearer']  # noqa: E501
+
+        _response_types_map = {
+            '200': "UpdateRegistroResponse",
+            '400': "ProblemDetails",
+            '403': None,
+            '404': None,
+            '429': None,
+            '500': "ProblemDetails",
+        }
+
+        return self.api_client.call_api(
+            '/soggetto-delegato/registri/{identificativo}', 'PUT',
+            _path_params,
+            _query_params,
+            _header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            response_types_map=_response_types_map,
+            auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
+            collection_formats=_collection_formats,
+            _request_auth=_params.get('_request_auth'))
+
+    @validate_arguments
+    def soggetto_delegato_registri_identificativo_xml_get(self, identificativo : Annotated[StrictStr, Field(..., description="Identificativo del registro.")], **kwargs) -> DownloadableBaseResponse:  # noqa: E501
+        """Vidimazione virtuale registro in formato XML  # noqa: E501
+
+        Ottiene la vidimazione virtuale del Registro in formato XML.  Rif. MODALITÀ OPERATIVA (8): Vidimazione digitale del registro cronologico di carico e scarico.  Nella fase di creazione di un nuovo registro, la piattaforma telematica RENTRI accede al servizio  per la vidimazione digitale messo a disposizione dalle Camere di Commercio e restituisce l'identificativo  unico nazionale del registro cronologico di carico e scarico.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.soggetto_delegato_registri_identificativo_xml_get(identificativo, async_req=True)
+        >>> result = thread.get()
+
+        :param identificativo: Identificativo del registro. (required)
+        :type identificativo: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: DownloadableBaseResponse
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the soggetto_delegato_registri_identificativo_xml_get_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.soggetto_delegato_registri_identificativo_xml_get_with_http_info(identificativo, **kwargs)  # noqa: E501
+
+    @validate_arguments
+    def soggetto_delegato_registri_identificativo_xml_get_with_http_info(self, identificativo : Annotated[StrictStr, Field(..., description="Identificativo del registro.")], **kwargs) -> ApiResponse:  # noqa: E501
+        """Vidimazione virtuale registro in formato XML  # noqa: E501
+
+        Ottiene la vidimazione virtuale del Registro in formato XML.  Rif. MODALITÀ OPERATIVA (8): Vidimazione digitale del registro cronologico di carico e scarico.  Nella fase di creazione di un nuovo registro, la piattaforma telematica RENTRI accede al servizio  per la vidimazione digitale messo a disposizione dalle Camere di Commercio e restituisce l'identificativo  unico nazionale del registro cronologico di carico e scarico.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.soggetto_delegato_registri_identificativo_xml_get_with_http_info(identificativo, async_req=True)
+        >>> result = thread.get()
+
+        :param identificativo: Identificativo del registro. (required)
+        :type identificativo: str
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
+        :type _request_auth: dict, optional
+        :type _content_type: string, optional: force content-type for the request
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(DownloadableBaseResponse, status_code(int), headers(HTTPHeaderDict))
+        """
+
+        _params = locals()
+
+        _all_params = [
+            'identificativo'
+        ]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
+            ]
+        )
+
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method soggetto_delegato_registri_identificativo_xml_get" % _key
                 )
-            )
-            if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+            _params[_key] = _val
+        del _params['kwargs']
+
+        _collection_formats = {}
+
+        # process the path parameters
+        _path_params = {}
+        if _params['identificativo'] is not None:
+            _path_params['identificativo'] = _params['identificativo']
+
+
+        # process the query parameters
+        _query_params = []
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
+        # set the HTTP header `Accept`
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json', 'application/problem+json'])  # noqa: E501
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'Bearer'
-        ]
+        _auth_settings = ['Bearer']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='PUT',
-            resource_path='/soggetto-delegato/registri/{identificativo}',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '200': "DownloadableBaseResponse",
+            '403': None,
+            '404': None,
+            '429': None,
+            '500': "ProblemDetails",
+        }
+
+        return self.api_client.call_api(
+            '/soggetto-delegato/registri/{identificativo}/xml', 'GET',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
+            _request_auth=_params.get('_request_auth'))
 
+    @validate_arguments
+    def soggetto_delegato_registri_post(self, create_registro_soggetto_delegato_request : Annotated[Optional[CreateRegistroSoggettoDelegatoRequest], Field(description="Richiesta.")] = None, **kwargs) -> CreateRegistroResponse:  # noqa: E501
+        """Apertura nuovo registro  # noqa: E501
 
+        Apre un nuovo registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
 
+        >>> thread = api.soggetto_delegato_registri_post(create_registro_soggetto_delegato_request, async_req=True)
+        >>> result = thread.get()
 
-    @validate_call
-    def soggetto_delegato_registri_identificativo_xml_get(
-        self,
-        identificativo: Annotated[StrictStr, Field(description="Identificativo del registro.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> DownloadableBaseResponse:
-        """Vidimazione virtuale registro in formato XML
+        :param create_registro_soggetto_delegato_request: Richiesta.
+        :type create_registro_soggetto_delegato_request: CreateRegistroSoggettoDelegatoRequest
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _request_timeout: timeout setting for this request.
+               If one number provided, it will be total request
+               timeout. It can also be a pair (tuple) of
+               (connection, read) timeouts.
+        :return: Returns the result object.
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: CreateRegistroResponse
+        """
+        kwargs['_return_http_data_only'] = True
+        if '_preload_content' in kwargs:
+            message = "Error! Please call the soggetto_delegato_registri_post_with_http_info method with `_preload_content` instead and obtain raw data from ApiResponse.raw_data"  # noqa: E501
+            raise ValueError(message)
+        return self.soggetto_delegato_registri_post_with_http_info(create_registro_soggetto_delegato_request, **kwargs)  # noqa: E501
 
-        Ottiene la vidimazione virtuale del Registro in formato XML.  Rif. MODALITÀ OPERATIVA (8): Vidimazione digitale del registro cronologico di carico e scarico.  Nella fase di creazione di un nuovo registro, la piattaforma telematica RENTRI accede al servizio  per la vidimazione digitale messo a disposizione dalle Camere di Commercio e restituisce l'identificativo  unico nazionale del registro cronologico di carico e scarico.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
+    @validate_arguments
+    def soggetto_delegato_registri_post_with_http_info(self, create_registro_soggetto_delegato_request : Annotated[Optional[CreateRegistroSoggettoDelegatoRequest], Field(description="Richiesta.")] = None, **kwargs) -> ApiResponse:  # noqa: E501
+        """Apertura nuovo registro  # noqa: E501
 
-        :param identificativo: Identificativo del registro. (required)
-        :type identificativo: str
+        Apre un nuovo registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>  # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.soggetto_delegato_registri_post_with_http_info(create_registro_soggetto_delegato_request, async_req=True)
+        >>> result = thread.get()
+
+        :param create_registro_soggetto_delegato_request: Richiesta.
+        :type create_registro_soggetto_delegato_request: CreateRegistroSoggettoDelegatoRequest
+        :param async_req: Whether to execute the request asynchronously.
+        :type async_req: bool, optional
+        :param _preload_content: if False, the ApiResponse.data will
+                                 be set to none and raw_data will store the
+                                 HTTP response body without reading/decoding.
+                                 Default is True.
+        :type _preload_content: bool, optional
+        :param _return_http_data_only: response data instead of ApiResponse
+                                       object with status code, headers, etc
+        :type _return_http_data_only: bool, optional
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
                                  timeout. It can also be a pair (tuple) of
                                  (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
         :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
+                              request; this effectively ignores the authentication
+                              in the spec for a single request.
         :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
+        :type _content_type: string, optional: force content-type for the request
         :return: Returns the result object.
-        """ # noqa: E501
+                 If the method is called asynchronously,
+                 returns the request thread.
+        :rtype: tuple(CreateRegistroResponse, status_code(int), headers(HTTPHeaderDict))
+        """
 
-        _param = self._soggetto_delegato_registri_identificativo_xml_get_serialize(
-            identificativo=identificativo,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
+        _params = locals()
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DownloadableBaseResponse",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
-
-
-    @validate_call
-    def soggetto_delegato_registri_identificativo_xml_get_with_http_info(
-        self,
-        identificativo: Annotated[StrictStr, Field(description="Identificativo del registro.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[DownloadableBaseResponse]:
-        """Vidimazione virtuale registro in formato XML
-
-        Ottiene la vidimazione virtuale del Registro in formato XML.  Rif. MODALITÀ OPERATIVA (8): Vidimazione digitale del registro cronologico di carico e scarico.  Nella fase di creazione di un nuovo registro, la piattaforma telematica RENTRI accede al servizio  per la vidimazione digitale messo a disposizione dalle Camere di Commercio e restituisce l'identificativo  unico nazionale del registro cronologico di carico e scarico.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
-
-        :param identificativo: Identificativo del registro. (required)
-        :type identificativo: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_registri_identificativo_xml_get_serialize(
-            identificativo=identificativo,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DownloadableBaseResponse",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def soggetto_delegato_registri_identificativo_xml_get_without_preload_content(
-        self,
-        identificativo: Annotated[StrictStr, Field(description="Identificativo del registro.")],
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Vidimazione virtuale registro in formato XML
-
-        Ottiene la vidimazione virtuale del Registro in formato XML.  Rif. MODALITÀ OPERATIVA (8): Vidimazione digitale del registro cronologico di carico e scarico.  Nella fase di creazione di un nuovo registro, la piattaforma telematica RENTRI accede al servizio  per la vidimazione digitale messo a disposizione dalle Camere di Commercio e restituisce l'identificativo  unico nazionale del registro cronologico di carico e scarico.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre una risposta vuota) anche in ambiente di produzione.</i><hr/>
-
-        :param identificativo: Identificativo del registro. (required)
-        :type identificativo: str
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_registri_identificativo_xml_get_serialize(
-            identificativo=identificativo,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '200': "DownloadableBaseResponse",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _soggetto_delegato_registri_identificativo_xml_get_serialize(
-        self,
-        identificativo,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
-
-        # process the path parameters
-        if identificativo is not None:
-            _path_params['identificativo'] = identificativo
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-
-
-        # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json', 
-                    'application/problem+json'
-                ]
-            )
-
-
-        # authentication setting
-        _auth_settings: List[str] = [
-            'Bearer'
+        _all_params = [
+            'create_registro_soggetto_delegato_request'
         ]
-
-        return self.api_client.param_serialize(
-            method='GET',
-            resource_path='/soggetto-delegato/registri/{identificativo}/xml',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
-            body=_body_params,
-            post_params=_form_params,
-            files=_files,
-            auth_settings=_auth_settings,
-            collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
-
-
-    @validate_call
-    def soggetto_delegato_registri_post(
-        self,
-        create_registro_soggetto_delegato_request: Annotated[Optional[CreateRegistroSoggettoDelegatoRequest], Field(description="Richiesta.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
+        _all_params.extend(
+            [
+                'async_req',
+                '_return_http_data_only',
+                '_preload_content',
+                '_request_timeout',
+                '_request_auth',
+                '_content_type',
+                '_headers'
             ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> CreateRegistroResponse:
-        """Apertura nuovo registro
-
-        Apre un nuovo registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>
-
-        :param create_registro_soggetto_delegato_request: Richiesta.
-        :type create_registro_soggetto_delegato_request: CreateRegistroSoggettoDelegatoRequest
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_registri_post_serialize(
-            create_registro_soggetto_delegato_request=create_registro_soggetto_delegato_request,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
         )
 
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateRegistroResponse",
-            '400': "ProblemDetails",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        ).data
+        # validate the arguments
+        for _key, _val in _params['kwargs'].items():
+            if _key not in _all_params:
+                raise ApiTypeError(
+                    "Got an unexpected keyword argument '%s'"
+                    " to method soggetto_delegato_registri_post" % _key
+                )
+            _params[_key] = _val
+        del _params['kwargs']
 
-
-    @validate_call
-    def soggetto_delegato_registri_post_with_http_info(
-        self,
-        create_registro_soggetto_delegato_request: Annotated[Optional[CreateRegistroSoggettoDelegatoRequest], Field(description="Richiesta.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> ApiResponse[CreateRegistroResponse]:
-        """Apertura nuovo registro
-
-        Apre un nuovo registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>
-
-        :param create_registro_soggetto_delegato_request: Richiesta.
-        :type create_registro_soggetto_delegato_request: CreateRegistroSoggettoDelegatoRequest
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_registri_post_serialize(
-            create_registro_soggetto_delegato_request=create_registro_soggetto_delegato_request,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateRegistroResponse",
-            '400': "ProblemDetails",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        response_data.read()
-        return self.api_client.response_deserialize(
-            response_data=response_data,
-            response_types_map=_response_types_map,
-        )
-
-
-    @validate_call
-    def soggetto_delegato_registri_post_without_preload_content(
-        self,
-        create_registro_soggetto_delegato_request: Annotated[Optional[CreateRegistroSoggettoDelegatoRequest], Field(description="Richiesta.")] = None,
-        _request_timeout: Union[
-            None,
-            Annotated[StrictFloat, Field(gt=0)],
-            Tuple[
-                Annotated[StrictFloat, Field(gt=0)],
-                Annotated[StrictFloat, Field(gt=0)]
-            ]
-        ] = None,
-        _request_auth: Optional[Dict[StrictStr, Any]] = None,
-        _content_type: Optional[StrictStr] = None,
-        _headers: Optional[Dict[StrictStr, Any]] = None,
-        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
-    ) -> RESTResponseType:
-        """Apertura nuovo registro
-
-        Apre un nuovo registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le richieste restituiranno sempre un codice di stato 422) anche in ambiente di produzione.</i><hr/>
-
-        :param create_registro_soggetto_delegato_request: Richiesta.
-        :type create_registro_soggetto_delegato_request: CreateRegistroSoggettoDelegatoRequest
-        :param _request_timeout: timeout setting for this request. If one
-                                 number provided, it will be total request
-                                 timeout. It can also be a pair (tuple) of
-                                 (connection, read) timeouts.
-        :type _request_timeout: int, tuple(int, int), optional
-        :param _request_auth: set to override the auth_settings for an a single
-                              request; this effectively ignores the
-                              authentication in the spec for a single request.
-        :type _request_auth: dict, optional
-        :param _content_type: force content-type for the request.
-        :type _content_type: str, Optional
-        :param _headers: set to override the headers for a single
-                         request; this effectively ignores the headers
-                         in the spec for a single request.
-        :type _headers: dict, optional
-        :param _host_index: set to override the host_index for a single
-                            request; this effectively ignores the host_index
-                            in the spec for a single request.
-        :type _host_index: int, optional
-        :return: Returns the result object.
-        """ # noqa: E501
-
-        _param = self._soggetto_delegato_registri_post_serialize(
-            create_registro_soggetto_delegato_request=create_registro_soggetto_delegato_request,
-            _request_auth=_request_auth,
-            _content_type=_content_type,
-            _headers=_headers,
-            _host_index=_host_index
-        )
-
-        _response_types_map: Dict[str, Optional[str]] = {
-            '201': "CreateRegistroResponse",
-            '400': "ProblemDetails",
-            '403': None,
-            '404': None,
-            '429': None,
-            '500': "ProblemDetails",
-        }
-        response_data = self.api_client.call_api(
-            *_param,
-            _request_timeout=_request_timeout
-        )
-        return response_data.response
-
-
-    def _soggetto_delegato_registri_post_serialize(
-        self,
-        create_registro_soggetto_delegato_request,
-        _request_auth,
-        _content_type,
-        _headers,
-        _host_index,
-    ) -> RequestSerialized:
-
-        _host = None
-
-        _collection_formats: Dict[str, str] = {
-        }
-
-        _path_params: Dict[str, str] = {}
-        _query_params: List[Tuple[str, str]] = []
-        _header_params: Dict[str, Optional[str]] = _headers or {}
-        _form_params: List[Tuple[str, str]] = []
-        _files: Dict[
-            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
-        ] = {}
-        _body_params: Optional[bytes] = None
+        _collection_formats = {}
 
         # process the path parameters
-        # process the query parameters
-        # process the header parameters
-        # process the form parameters
-        # process the body parameter
-        if create_registro_soggetto_delegato_request is not None:
-            _body_params = create_registro_soggetto_delegato_request
+        _path_params = {}
 
+        # process the query parameters
+        _query_params = []
+        # process the header parameters
+        _header_params = dict(_params.get('_headers', {}))
+        # process the form parameters
+        _form_params = []
+        _files = {}
+        # process the body parameter
+        _body_params = None
+        if _params['create_registro_soggetto_delegato_request'] is not None:
+            _body_params = _params['create_registro_soggetto_delegato_request']
 
         # set the HTTP header `Accept`
-        if 'Accept' not in _header_params:
-            _header_params['Accept'] = self.api_client.select_header_accept(
-                [
-                    'application/json', 
-                    'application/problem+json'
-                ]
-            )
+        _header_params['Accept'] = self.api_client.select_header_accept(
+            ['application/json', 'application/problem+json'])  # noqa: E501
 
         # set the HTTP header `Content-Type`
-        if _content_type:
-            _header_params['Content-Type'] = _content_type
-        else:
-            _default_content_type = (
-                self.api_client.select_header_content_type(
-                    [
-                        'application/json'
-                    ]
-                )
-            )
-            if _default_content_type is not None:
-                _header_params['Content-Type'] = _default_content_type
+        _content_types_list = _params.get('_content_type',
+            self.api_client.select_header_content_type(
+                ['application/json']))
+        if _content_types_list:
+                _header_params['Content-Type'] = _content_types_list
 
         # authentication setting
-        _auth_settings: List[str] = [
-            'Bearer'
-        ]
+        _auth_settings = ['Bearer']  # noqa: E501
 
-        return self.api_client.param_serialize(
-            method='POST',
-            resource_path='/soggetto-delegato/registri',
-            path_params=_path_params,
-            query_params=_query_params,
-            header_params=_header_params,
+        _response_types_map = {
+            '201': "CreateRegistroResponse",
+            '400': "ProblemDetails",
+            '403': None,
+            '404': None,
+            '429': None,
+            '500': "ProblemDetails",
+        }
+
+        return self.api_client.call_api(
+            '/soggetto-delegato/registri', 'POST',
+            _path_params,
+            _query_params,
+            _header_params,
             body=_body_params,
             post_params=_form_params,
             files=_files,
+            response_types_map=_response_types_map,
             auth_settings=_auth_settings,
+            async_req=_params.get('async_req'),
+            _return_http_data_only=_params.get('_return_http_data_only'),  # noqa: E501
+            _preload_content=_params.get('_preload_content', True),
+            _request_timeout=_params.get('_request_timeout'),
             collection_formats=_collection_formats,
-            _host=_host,
-            _request_auth=_request_auth
-        )
-
-
+            _request_auth=_params.get('_request_auth'))

@@ -3,7 +3,6 @@
 Registro
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **identificativo** | **str** |  | [optional] 
@@ -35,7 +34,7 @@ json = "{}"
 # create an instance of RegistroModel from a JSON string
 registro_model_instance = RegistroModel.from_json(json)
 # print the JSON string representation of the object
-print(RegistroModel.to_json())
+print RegistroModel.to_json()
 
 # convert the object into a dict
 registro_model_dict = registro_model_instance.to_dict()

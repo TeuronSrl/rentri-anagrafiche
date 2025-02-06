@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.create_registro_soggetto_delegato_request import CreateRegistroSoggettoDelegatoRequest
+from rentri_anagrafiche.models.create_registro_soggetto_delegato_request import CreateRegistroSoggettoDelegatoRequest  # noqa: E501
 
 class TestCreateRegistroSoggettoDelegatoRequest(unittest.TestCase):
     """CreateRegistroSoggettoDelegatoRequest unit test stubs"""
@@ -28,12 +29,12 @@ class TestCreateRegistroSoggettoDelegatoRequest(unittest.TestCase):
 
     def make_instance(self, include_optional) -> CreateRegistroSoggettoDelegatoRequest:
         """Test CreateRegistroSoggettoDelegatoRequest
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `CreateRegistroSoggettoDelegatoRequest`
         """
-        model = CreateRegistroSoggettoDelegatoRequest()
+        model = CreateRegistroSoggettoDelegatoRequest()  # noqa: E501
         if include_optional:
             return CreateRegistroSoggettoDelegatoRequest(
                 num_iscr_sito = '0',

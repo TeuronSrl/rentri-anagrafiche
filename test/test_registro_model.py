@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.registro_model import RegistroModel
+from rentri_anagrafiche.models.registro_model import RegistroModel  # noqa: E501
 
 class TestRegistroModel(unittest.TestCase):
     """RegistroModel unit test stubs"""
@@ -28,12 +29,12 @@ class TestRegistroModel(unittest.TestCase):
 
     def make_instance(self, include_optional) -> RegistroModel:
         """Test RegistroModel
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `RegistroModel`
         """
-        model = RegistroModel()
+        model = RegistroModel()  # noqa: E501
         if include_optional:
             return RegistroModel(
                 identificativo = '',

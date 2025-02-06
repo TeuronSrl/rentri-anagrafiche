@@ -19,100 +19,83 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import List, Optional
+from pydantic import BaseModel, Field, StrictStr, conlist
 from rentri_anagrafiche.models.operazioni_recupero_smaltimento import OperazioniRecuperoSmaltimento
 from rentri_anagrafiche.models.tipi_autorizzazione import TipiAutorizzazione
-from typing import Optional, Set
-from typing_extensions import Self
 
 class AutRecerModel(BaseModel):
     """
     AutRecerModel
-    """ # noqa: E501
+    """
     tipo_autorizzazione: Optional[TipiAutorizzazione] = Field(default=None, description="<p>Valori ammessi:<ul style=\"margin:0\"><li><i>RecSmalArt208</i> - Autorizzazione unica per i nuovi impianti di recupero/smaltimento - art. 208 decreto legislativo 3 aprile 2006, n. 152.</li><li><i>RecSmalImpMobiliArt208</i> - Autorizzazione all'esercizio di operazioni di recupero e/o smaltimento dei rifiuti con impianti mobili - art.208, comma 15 del decreto legislativo 3 aprile 2006, n. 152.</li><li><i>RicercaSperimentazione</i> - Autorizzazione alla realizzazione di impianti di ricerca e sperimentazione - art. 211 del decreto legislativo 3 aprile 2006, n. 152.</li><li><i>AIA</i> - Autorizzazione Integrata Ambientale - artt. 29-ter e 213 del decreto legislativo 3 aprile 2006, n. 152.</li><li><i>RecProcSemplificata</i> - Operazioni di recupero mediante Comunicazione in \"Procedura Semplificata\" - artt.214 e 216 del decreto legislativo 3 aprile 2006, n. 152e autorizzazione unica ambientale (AUA) - Decreto Presidente Repubblica n. 59 del 13 marzo 2013.</li><li><i>OpBonifica</i> - Provvedimenti che autorizzano le operazioni di bonifica, ai sensi del comma 7 dell’art. 242 del decreto legislativo 3 aprile 2006, n. 152.</li><li><i>Straordinario</i> - Autorizzazioni “straordinarie” art. 191 del decreto legislativo 3 aprile 2006, n. 152 (attività svolte in regime di ordinanza contingibile e urgente)</li><li><i>ComTrattamentoAcqueReflue</i> - Comunicazione al trattamento di rifiuti e materiali in impianti di trattamento di acque reflue urbane - art. 110 c.3 del D.Lgs. 152/2006</li><li><i>AutTrattamentoAcqueReflue</i> - Autorizzazione  al trattamento di rifiuti liquidi in impianti di trattamento di acque reflue urbane - artt. 110 c.2 con provvedimento secondo artt. 208 oppure 29-ter e 213 del D.Lgs. 152/2006</li></ul></p>")
     autorizzazione_rif: Optional[StrictStr] = None
     data_rilascio: Optional[datetime] = None
     data_scadenza: Optional[datetime] = None
-    attivita_recupero_smaltimento: Optional[List[OperazioniRecuperoSmaltimento]] = Field(default=None, description="<p>Valori ammessi:<ul style=\"margin:0\"><li><i>R1</i> - Utilizzazione principale come combustibile o come altro mezzo per produrre energia</li><li><i>R2</i> - Rigenerazione/recupero di solventi</li><li><i>R3</i> - Riciclo/recupero delle sostanze organiche non utilizzate come solventi</li><li><i>R4</i> - Riciclo/recupero dei metalli e dei composti metallici</li><li><i>R5</i> - Riciclo/recupero di altre sostanze inorganiche</li><li><i>R6</i> - Rigenerazione degli acidi o delle basi</li><li><i>R7</i> - Recupero dei prodotti che servono a captare gli inquinanti</li><li><i>R8</i> - Recupero dei prodotti provenienti dai catalizzatori</li><li><i>R9</i> - Rigenerazione o altri reimpieghi degli oli</li><li><i>R10</i> - Spandimento sul suolo a beneficio dell'agricoltura o dell'ecologia</li><li><i>R11</i> - Utilizzazione di rifiuti ottenuti da una delle operazioni indicate da R1 a R10</li><li><i>R12</i> - Scambio di rifiuti per sottoporli a una delle operazioni indicate da R1 a R11</li><li><i>R13</i> - Messa in riserva di rifiuti per sottoporli a una delle operazioni indicate nei punti da R1 a R12</li><li><i>D1</i> - Deposito sul o nel suolo</li><li><i>D2</i> - Trattamento in ambiente terrestre</li><li><i>D3</i> - Iniezioni in profondità</li><li><i>D4</i> - Lagunaggio</li><li><i>D5</i> - Messa in discarica specialmente allestita</li><li><i>D6</i> - Scarico dei rifiuti solidi nell'ambiente idrico eccetto l'immersione</li><li><i>D7</i> - Immersione, compreso il seppellimento nel sottosuolo marino</li><li><i>D8</i> - Trattamento biologico non specificato altrove nel presente allegato</li><li><i>D9</i> - Trattamento fisico-chimico non specificato altrove nel presente allegato</li><li><i>D10</i> - Incenerimento a terra</li><li><i>D11</i> - Incenerimento in mare</li><li><i>D12</i> - Deposito permanente</li><li><i>D13</i> - Raggruppamento preliminare prima di una delle operazioni di cui ai punti da D1 a D12</li><li><i>D14</i> - Ricondizionamento preliminare prima di una delle operazioni di cui ai punti da D1 a D13</li><li><i>D15</i> - Deposito preliminare prima di una delle operazioni di cui ai punti da D1 a D14</li></ul></p>")
-    __properties: ClassVar[List[str]] = ["tipo_autorizzazione", "autorizzazione_rif", "data_rilascio", "data_scadenza", "attivita_recupero_smaltimento"]
+    attivita_recupero_smaltimento: Optional[conlist(OperazioniRecuperoSmaltimento)] = Field(default=None, description="<p>Valori ammessi:<ul style=\"margin:0\"><li><i>R1</i> - Utilizzazione principale come combustibile o come altro mezzo per produrre energia</li><li><i>R2</i> - Rigenerazione/recupero di solventi</li><li><i>R3</i> - Riciclo/recupero delle sostanze organiche non utilizzate come solventi</li><li><i>R4</i> - Riciclo/recupero dei metalli e dei composti metallici</li><li><i>R5</i> - Riciclo/recupero di altre sostanze inorganiche</li><li><i>R6</i> - Rigenerazione degli acidi o delle basi</li><li><i>R7</i> - Recupero dei prodotti che servono a captare gli inquinanti</li><li><i>R8</i> - Recupero dei prodotti provenienti dai catalizzatori</li><li><i>R9</i> - Rigenerazione o altri reimpieghi degli oli</li><li><i>R10</i> - Spandimento sul suolo a beneficio dell'agricoltura o dell'ecologia</li><li><i>R11</i> - Utilizzazione di rifiuti ottenuti da una delle operazioni indicate da R1 a R10</li><li><i>R12</i> - Scambio di rifiuti per sottoporli a una delle operazioni indicate da R1 a R11</li><li><i>R13</i> - Messa in riserva di rifiuti per sottoporli a una delle operazioni indicate nei punti da R1 a R12</li><li><i>D1</i> - Deposito sul o nel suolo</li><li><i>D2</i> - Trattamento in ambiente terrestre</li><li><i>D3</i> - Iniezioni in profondità</li><li><i>D4</i> - Lagunaggio</li><li><i>D5</i> - Messa in discarica specialmente allestita</li><li><i>D6</i> - Scarico dei rifiuti solidi nell'ambiente idrico eccetto l'immersione</li><li><i>D7</i> - Immersione, compreso il seppellimento nel sottosuolo marino</li><li><i>D8</i> - Trattamento biologico non specificato altrove nel presente allegato</li><li><i>D9</i> - Trattamento fisico-chimico non specificato altrove nel presente allegato</li><li><i>D10</i> - Incenerimento a terra</li><li><i>D11</i> - Incenerimento in mare</li><li><i>D12</i> - Deposito permanente</li><li><i>D13</i> - Raggruppamento preliminare prima di una delle operazioni di cui ai punti da D1 a D12</li><li><i>D14</i> - Ricondizionamento preliminare prima di una delle operazioni di cui ai punti da D1 a D13</li><li><i>D15</i> - Deposito preliminare prima di una delle operazioni di cui ai punti da D1 a D14</li></ul></p>")
+    __properties = ["tipo_autorizzazione", "autorizzazione_rif", "data_rilascio", "data_scadenza", "attivita_recupero_smaltimento"]
 
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
-
+    class Config:
+        """Pydantic configuration"""
+        allow_population_by_field_name = True
+        validate_assignment = True
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        return pprint.pformat(self.dict(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> AutRecerModel:
         """Create an instance of AutRecerModel from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Return the dictionary representation of the model using alias.
-
-        This has the following differences from calling pydantic's
-        `self.model_dump(by_alias=True)`:
-
-        * `None` is only added to the output dict for nullable fields that
-          were set at model initialization. Other fields with value `None`
-          are ignored.
-        """
-        excluded_fields: Set[str] = set([
-        ])
-
-        _dict = self.model_dump(
-            by_alias=True,
-            exclude=excluded_fields,
-            exclude_none=True,
-        )
+    def to_dict(self):
+        """Returns the dictionary representation of the model using alias"""
+        _dict = self.dict(by_alias=True,
+                          exclude={
+                          },
+                          exclude_none=True)
         # set to None if tipo_autorizzazione (nullable) is None
-        # and model_fields_set contains the field
-        if self.tipo_autorizzazione is None and "tipo_autorizzazione" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.tipo_autorizzazione is None and "tipo_autorizzazione" in self.__fields_set__:
             _dict['tipo_autorizzazione'] = None
 
         # set to None if autorizzazione_rif (nullable) is None
-        # and model_fields_set contains the field
-        if self.autorizzazione_rif is None and "autorizzazione_rif" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.autorizzazione_rif is None and "autorizzazione_rif" in self.__fields_set__:
             _dict['autorizzazione_rif'] = None
 
         # set to None if data_rilascio (nullable) is None
-        # and model_fields_set contains the field
-        if self.data_rilascio is None and "data_rilascio" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.data_rilascio is None and "data_rilascio" in self.__fields_set__:
             _dict['data_rilascio'] = None
 
         # set to None if data_scadenza (nullable) is None
-        # and model_fields_set contains the field
-        if self.data_scadenza is None and "data_scadenza" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.data_scadenza is None and "data_scadenza" in self.__fields_set__:
             _dict['data_scadenza'] = None
 
         # set to None if attivita_recupero_smaltimento (nullable) is None
-        # and model_fields_set contains the field
-        if self.attivita_recupero_smaltimento is None and "attivita_recupero_smaltimento" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.attivita_recupero_smaltimento is None and "attivita_recupero_smaltimento" in self.__fields_set__:
             _dict['attivita_recupero_smaltimento'] = None
 
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict) -> AutRecerModel:
         """Create an instance of AutRecerModel from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return cls.model_validate(obj)
+            return AutRecerModel.parse_obj(obj)
 
-        _obj = cls.model_validate({
+        _obj = AutRecerModel.parse_obj({
             "tipo_autorizzazione": obj.get("tipo_autorizzazione"),
             "autorizzazione_rif": obj.get("autorizzazione_rif"),
             "data_rilascio": obj.get("data_rilascio"),

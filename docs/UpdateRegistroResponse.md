@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **identificativo** | **str** |  | [optional] 
@@ -17,7 +16,7 @@ json = "{}"
 # create an instance of UpdateRegistroResponse from a JSON string
 update_registro_response_instance = UpdateRegistroResponse.from_json(json)
 # print the JSON string representation of the object
-print(UpdateRegistroResponse.to_json())
+print UpdateRegistroResponse.to_json()
 
 # convert the object into a dict
 update_registro_response_dict = update_registro_response_instance.to_dict()

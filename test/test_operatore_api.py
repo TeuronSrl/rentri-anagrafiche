@@ -15,7 +15,7 @@
 
 import unittest
 
-from rentri_anagrafiche.api.operatore_api import OperatoreApi
+from rentri_anagrafiche.api.operatore_api import OperatoreApi  # noqa: E501
 
 
 class TestOperatoreApi(unittest.TestCase):
@@ -25,138 +25,138 @@ class TestOperatoreApi(unittest.TestCase):
         self.api = OperatoreApi()
 
     def tearDown(self) -> None:
-        pass
+        self.api.api_client.close()
 
     def test_operatore_get(self) -> None:
         """Test case for operatore_get
 
-        Elenco degli operatori
+        Elenco degli operatori  # noqa: E501
         """
         pass
 
     def test_operatore_identificativo_controllo_autorizzazione_albo_get(self) -> None:
         """Test case for operatore_identificativo_controllo_autorizzazione_albo_get
 
-        Consultazione autorizzazioni Albo
+        Consultazione autorizzazioni Albo  # noqa: E501
         """
         pass
 
     def test_operatore_identificativo_controllo_iscrizione_get(self) -> None:
         """Test case for operatore_identificativo_controllo_iscrizione_get
 
-        Consultazione iscrizioni
+        Consultazione iscrizioni  # noqa: E501
         """
         pass
 
     def test_operatore_identificativo_siti_comune_id_controllo_autorizzazioni_get(self) -> None:
         """Test case for operatore_identificativo_siti_comune_id_controllo_autorizzazioni_get
 
-        Consultazione autorizzazioni unità locali
+        Consultazione autorizzazioni unità locali  # noqa: E501
         """
         pass
 
     def test_operatore_num_iscr_autorizzazione_albo_get(self) -> None:
         """Test case for operatore_num_iscr_autorizzazione_albo_get
 
-        Informazioni autorizzazione Albo
+        Informazioni autorizzazione Albo  # noqa: E501
         """
         pass
 
     def test_operatore_num_iscr_siti_get(self) -> None:
         """Test case for operatore_num_iscr_siti_get
 
-        Elenco unità locali
+        Elenco unità locali  # noqa: E501
         """
         pass
 
     def test_operatore_num_iscr_siti_num_iscr_sito_autorizzazioni_get(self) -> None:
         """Test case for operatore_num_iscr_siti_num_iscr_sito_autorizzazioni_get
 
-        Informazioni sulle autorizzazioni dell'unità locale
+        Informazioni sulle autorizzazioni dell'unità locale  # noqa: E501
         """
         pass
 
     def test_operatore_num_iscr_siti_num_iscr_sito_get(self) -> None:
         """Test case for operatore_num_iscr_siti_num_iscr_sito_get
 
-        Dati dell'unità locale
+        Dati dell'unità locale  # noqa: E501
         """
         pass
 
     def test_operatore_num_iscr_siti_num_iscr_sito_registri_get(self) -> None:
         """Test case for operatore_num_iscr_siti_num_iscr_sito_registri_get
 
-        Elenco registri
+        Elenco registri  # noqa: E501
         """
         pass
 
     def test_operatore_registri_identificativo_delete(self) -> None:
         """Test case for operatore_registri_identificativo_delete
 
-        Chiudi registro
+        Chiudi registro  # noqa: E501
         """
         pass
 
     def test_operatore_registri_identificativo_get(self) -> None:
         """Test case for operatore_registri_identificativo_get
 
-        Dati registro
+        Dati registro  # noqa: E501
         """
         pass
 
     def test_operatore_registri_identificativo_put(self) -> None:
         """Test case for operatore_registri_identificativo_put
 
-        Modifica registro
+        Modifica registro  # noqa: E501
         """
         pass
 
     def test_operatore_registri_identificativo_xml_get(self) -> None:
         """Test case for operatore_registri_identificativo_xml_get
 
-        Vidimazione virtuale registro in formato XML
+        Vidimazione virtuale registro in formato XML  # noqa: E501
         """
         pass
 
     def test_operatore_registri_post(self) -> None:
         """Test case for operatore_registri_post
 
-        Apertura nuovo registro
+        Apertura nuovo registro  # noqa: E501
         """
         pass
 
     def test_registri_identificativo_delete(self) -> None:
         """Test case for registri_identificativo_delete
 
-        ⚠️[DEPRECATO] - utilizzare /operatore/registri/{identificativo} - Chiudi registro
+        ⚠️[DEPRECATO] - utilizzare /operatore/registri/{identificativo} - Chiudi registro  # noqa: E501
         """
         pass
 
     def test_registri_identificativo_get(self) -> None:
         """Test case for registri_identificativo_get
 
-        ⚠️[DEPRECATO] - utilizzare /operatore/registri/{identificativo} - Dati registro
+        ⚠️[DEPRECATO] - utilizzare /operatore/registri/{identificativo} - Dati registro  # noqa: E501
         """
         pass
 
     def test_registri_identificativo_put(self) -> None:
         """Test case for registri_identificativo_put
 
-        ⚠️[DEPRECATO] - utilizzare /operatore/registri/{identificativo} - Modifica registro
+        ⚠️[DEPRECATO] - utilizzare /operatore/registri/{identificativo} - Modifica registro  # noqa: E501
         """
         pass
 
     def test_registri_identificativo_xml_get(self) -> None:
         """Test case for registri_identificativo_xml_get
 
-        ⚠️[DEPRECATO] - utilizzare /operatore/registri/{identificativo}/xml - Vidimazione virtuale registro in formato XML
+        ⚠️[DEPRECATO] - utilizzare /operatore/registri/{identificativo}/xml - Vidimazione virtuale registro in formato XML  # noqa: E501
         """
         pass
 
     def test_registri_post(self) -> None:
         """Test case for registri_post
 
-        ⚠️[DEPRECATO] - utilizzare /operatore/registri - Apertura nuovo registro
+        ⚠️[DEPRECATO] - utilizzare /operatore/registri - Apertura nuovo registro  # noqa: E501
         """
         pass
 

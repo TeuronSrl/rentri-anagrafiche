@@ -19,16 +19,14 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import Optional
+from pydantic import BaseModel, StrictInt, StrictStr
 from rentri_anagrafiche.models.profili_soggetto import ProfiliSoggetto
-from typing import Optional, Set
-from typing_extensions import Self
 
 class OperatoreModel(BaseModel):
     """
-    Operatore
-    """ # noqa: E501
+    Operatore  # noqa: E501
+    """
     num_iscr: Optional[StrictStr] = None
     profilo_soggetto: Optional[ProfiliSoggetto] = None
     data_iscrizione: Optional[datetime] = None
@@ -57,194 +55,179 @@ class OperatoreModel(BaseModel):
     dipendenti: Optional[StrictInt] = None
     data_ultima_visura: Optional[datetime] = None
     flag_esonerato_iscr_albo: Optional[StrictInt] = None
-    __properties: ClassVar[List[str]] = ["num_iscr", "profilo_soggetto", "data_iscrizione", "identificativo", "ipa", "denominazione", "forma_giuridica_id", "piva", "cciaarea", "nrea", "data_iscrizione_ri", "stato_impresa_ri", "dipendenti_ri", "data_rilevazione_dipendenti_ri", "nazione_slid", "provincia_slid", "comune_slid", "citta_sl", "indirizzo_sl", "civico_sl", "capsl", "pec", "cod_fisc_lr", "cognome_lr", "nome_lr", "dipendenti", "data_ultima_visura", "flag_esonerato_iscr_albo"]
+    __properties = ["num_iscr", "profilo_soggetto", "data_iscrizione", "identificativo", "ipa", "denominazione", "forma_giuridica_id", "piva", "cciaarea", "nrea", "data_iscrizione_ri", "stato_impresa_ri", "dipendenti_ri", "data_rilevazione_dipendenti_ri", "nazione_slid", "provincia_slid", "comune_slid", "citta_sl", "indirizzo_sl", "civico_sl", "capsl", "pec", "cod_fisc_lr", "cognome_lr", "nome_lr", "dipendenti", "data_ultima_visura", "flag_esonerato_iscr_albo"]
 
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
-
+    class Config:
+        """Pydantic configuration"""
+        allow_population_by_field_name = True
+        validate_assignment = True
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        return pprint.pformat(self.dict(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> OperatoreModel:
         """Create an instance of OperatoreModel from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Return the dictionary representation of the model using alias.
-
-        This has the following differences from calling pydantic's
-        `self.model_dump(by_alias=True)`:
-
-        * `None` is only added to the output dict for nullable fields that
-          were set at model initialization. Other fields with value `None`
-          are ignored.
-        """
-        excluded_fields: Set[str] = set([
-        ])
-
-        _dict = self.model_dump(
-            by_alias=True,
-            exclude=excluded_fields,
-            exclude_none=True,
-        )
+    def to_dict(self):
+        """Returns the dictionary representation of the model using alias"""
+        _dict = self.dict(by_alias=True,
+                          exclude={
+                          },
+                          exclude_none=True)
         # set to None if num_iscr (nullable) is None
-        # and model_fields_set contains the field
-        if self.num_iscr is None and "num_iscr" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.num_iscr is None and "num_iscr" in self.__fields_set__:
             _dict['num_iscr'] = None
 
         # set to None if data_iscrizione (nullable) is None
-        # and model_fields_set contains the field
-        if self.data_iscrizione is None and "data_iscrizione" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.data_iscrizione is None and "data_iscrizione" in self.__fields_set__:
             _dict['data_iscrizione'] = None
 
         # set to None if identificativo (nullable) is None
-        # and model_fields_set contains the field
-        if self.identificativo is None and "identificativo" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.identificativo is None and "identificativo" in self.__fields_set__:
             _dict['identificativo'] = None
 
         # set to None if ipa (nullable) is None
-        # and model_fields_set contains the field
-        if self.ipa is None and "ipa" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.ipa is None and "ipa" in self.__fields_set__:
             _dict['ipa'] = None
 
         # set to None if denominazione (nullable) is None
-        # and model_fields_set contains the field
-        if self.denominazione is None and "denominazione" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.denominazione is None and "denominazione" in self.__fields_set__:
             _dict['denominazione'] = None
 
         # set to None if forma_giuridica_id (nullable) is None
-        # and model_fields_set contains the field
-        if self.forma_giuridica_id is None and "forma_giuridica_id" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.forma_giuridica_id is None and "forma_giuridica_id" in self.__fields_set__:
             _dict['forma_giuridica_id'] = None
 
         # set to None if piva (nullable) is None
-        # and model_fields_set contains the field
-        if self.piva is None and "piva" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.piva is None and "piva" in self.__fields_set__:
             _dict['piva'] = None
 
         # set to None if cciaarea (nullable) is None
-        # and model_fields_set contains the field
-        if self.cciaarea is None and "cciaarea" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.cciaarea is None and "cciaarea" in self.__fields_set__:
             _dict['cciaarea'] = None
 
         # set to None if nrea (nullable) is None
-        # and model_fields_set contains the field
-        if self.nrea is None and "nrea" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.nrea is None and "nrea" in self.__fields_set__:
             _dict['nrea'] = None
 
         # set to None if data_iscrizione_ri (nullable) is None
-        # and model_fields_set contains the field
-        if self.data_iscrizione_ri is None and "data_iscrizione_ri" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.data_iscrizione_ri is None and "data_iscrizione_ri" in self.__fields_set__:
             _dict['data_iscrizione_ri'] = None
 
         # set to None if stato_impresa_ri (nullable) is None
-        # and model_fields_set contains the field
-        if self.stato_impresa_ri is None and "stato_impresa_ri" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.stato_impresa_ri is None and "stato_impresa_ri" in self.__fields_set__:
             _dict['stato_impresa_ri'] = None
 
         # set to None if dipendenti_ri (nullable) is None
-        # and model_fields_set contains the field
-        if self.dipendenti_ri is None and "dipendenti_ri" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.dipendenti_ri is None and "dipendenti_ri" in self.__fields_set__:
             _dict['dipendenti_ri'] = None
 
         # set to None if data_rilevazione_dipendenti_ri (nullable) is None
-        # and model_fields_set contains the field
-        if self.data_rilevazione_dipendenti_ri is None and "data_rilevazione_dipendenti_ri" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.data_rilevazione_dipendenti_ri is None and "data_rilevazione_dipendenti_ri" in self.__fields_set__:
             _dict['data_rilevazione_dipendenti_ri'] = None
 
         # set to None if nazione_slid (nullable) is None
-        # and model_fields_set contains the field
-        if self.nazione_slid is None and "nazione_slid" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.nazione_slid is None and "nazione_slid" in self.__fields_set__:
             _dict['nazione_slid'] = None
 
         # set to None if provincia_slid (nullable) is None
-        # and model_fields_set contains the field
-        if self.provincia_slid is None and "provincia_slid" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.provincia_slid is None and "provincia_slid" in self.__fields_set__:
             _dict['provincia_slid'] = None
 
         # set to None if comune_slid (nullable) is None
-        # and model_fields_set contains the field
-        if self.comune_slid is None and "comune_slid" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.comune_slid is None and "comune_slid" in self.__fields_set__:
             _dict['comune_slid'] = None
 
         # set to None if citta_sl (nullable) is None
-        # and model_fields_set contains the field
-        if self.citta_sl is None and "citta_sl" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.citta_sl is None and "citta_sl" in self.__fields_set__:
             _dict['citta_sl'] = None
 
         # set to None if indirizzo_sl (nullable) is None
-        # and model_fields_set contains the field
-        if self.indirizzo_sl is None and "indirizzo_sl" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.indirizzo_sl is None and "indirizzo_sl" in self.__fields_set__:
             _dict['indirizzo_sl'] = None
 
         # set to None if civico_sl (nullable) is None
-        # and model_fields_set contains the field
-        if self.civico_sl is None and "civico_sl" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.civico_sl is None and "civico_sl" in self.__fields_set__:
             _dict['civico_sl'] = None
 
         # set to None if capsl (nullable) is None
-        # and model_fields_set contains the field
-        if self.capsl is None and "capsl" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.capsl is None and "capsl" in self.__fields_set__:
             _dict['capsl'] = None
 
         # set to None if pec (nullable) is None
-        # and model_fields_set contains the field
-        if self.pec is None and "pec" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.pec is None and "pec" in self.__fields_set__:
             _dict['pec'] = None
 
         # set to None if cod_fisc_lr (nullable) is None
-        # and model_fields_set contains the field
-        if self.cod_fisc_lr is None and "cod_fisc_lr" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.cod_fisc_lr is None and "cod_fisc_lr" in self.__fields_set__:
             _dict['cod_fisc_lr'] = None
 
         # set to None if cognome_lr (nullable) is None
-        # and model_fields_set contains the field
-        if self.cognome_lr is None and "cognome_lr" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.cognome_lr is None and "cognome_lr" in self.__fields_set__:
             _dict['cognome_lr'] = None
 
         # set to None if nome_lr (nullable) is None
-        # and model_fields_set contains the field
-        if self.nome_lr is None and "nome_lr" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.nome_lr is None and "nome_lr" in self.__fields_set__:
             _dict['nome_lr'] = None
 
         # set to None if dipendenti (nullable) is None
-        # and model_fields_set contains the field
-        if self.dipendenti is None and "dipendenti" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.dipendenti is None and "dipendenti" in self.__fields_set__:
             _dict['dipendenti'] = None
 
         # set to None if data_ultima_visura (nullable) is None
-        # and model_fields_set contains the field
-        if self.data_ultima_visura is None and "data_ultima_visura" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.data_ultima_visura is None and "data_ultima_visura" in self.__fields_set__:
             _dict['data_ultima_visura'] = None
 
         # set to None if flag_esonerato_iscr_albo (nullable) is None
-        # and model_fields_set contains the field
-        if self.flag_esonerato_iscr_albo is None and "flag_esonerato_iscr_albo" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.flag_esonerato_iscr_albo is None and "flag_esonerato_iscr_albo" in self.__fields_set__:
             _dict['flag_esonerato_iscr_albo'] = None
 
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict) -> OperatoreModel:
         """Create an instance of OperatoreModel from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return cls.model_validate(obj)
+            return OperatoreModel.parse_obj(obj)
 
-        _obj = cls.model_validate({
+        _obj = OperatoreModel.parse_obj({
             "num_iscr": obj.get("num_iscr"),
             "profilo_soggetto": obj.get("profilo_soggetto"),
             "data_iscrizione": obj.get("data_iscrizione"),

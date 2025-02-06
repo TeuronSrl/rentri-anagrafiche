@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.stati import Stati
+from rentri_anagrafiche.models.stati import Stati  # noqa: E501
 
 class TestStati(unittest.TestCase):
     """Stati unit test stubs"""

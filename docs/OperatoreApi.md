@@ -35,8 +35,9 @@ Ritorna l'elenco degli operatori.<hr/><i>Servizio richiamabile in modalità <b>S
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.operatore_model import OperatoreModel
 from rentri_anagrafiche.rest import ApiException
@@ -77,7 +78,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **num_iscr_ass** | **str**| Filtra l&#39;elenco estraendo gli operatori delegati dal soggetto delegato identificato dal numero iscrizione indicato. | [optional] 
@@ -96,7 +96,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Elenco degli operatori. |  -  |
@@ -115,8 +114,9 @@ Restituisce se un operatore, identificato dal codice fiscale, è autorizzato opp
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
@@ -156,7 +156,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Codice fiscale dell&#39;operatore | 
@@ -175,7 +174,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | True se esistono autorizzazioni, false altrimenti |  -  |
@@ -194,8 +192,9 @@ Restituisce se un operatore, identificato dal codice fiscale, è iscritto o no a
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
@@ -235,7 +234,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Codice fiscale dell&#39;operatore | 
@@ -254,7 +252,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | True se l&#39;operatore con il codice fiscale indicato risulta iscritto, false altrimenti |  -  |
@@ -273,8 +270,9 @@ Restituisce se un operatore, identificato dal codice fiscale, è autorizzato opp
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
@@ -316,7 +314,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Codice fiscale dell&#39;operatore | 
@@ -337,7 +334,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | True se esistono autorizzazioni, false altrimenti |  -  |
@@ -356,8 +352,9 @@ Restituisce le informazioni sull'autorizzazione all'Albo Nazionale Gestori Ambie
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.aut_albo_model import AutAlboModel
 from rentri_anagrafiche.rest import ApiException
@@ -398,7 +395,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **num_iscr** | **str**| Numero iscrizione operatore rilasciato all&#39;iscrizione. Per recuperare il numero iscrizione attribuito all&#39;operatore consultare l&#39;operazione Elenco Operatori iscritti nell&#39;area riservata Operatori dove è presente la voce Num. iscr. operatore. | 
@@ -417,7 +413,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Dati dell&#39;autorizzazione all&#39;Albo Nazionale Gestori Ambientali. |  -  |
@@ -438,8 +433,9 @@ Ottiene l'elenco delle unità locali di un operatore.<hr/><i>Servizio richiamabi
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.sito_model import SitoModel
 from rentri_anagrafiche.rest import ApiException
@@ -490,7 +486,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **num_iscr** | **str**| Numero iscrizione operatore rilasciato all&#39;iscrizione. Per recuperare il numero iscrizione attribuito all&#39;operatore consultare l&#39;operazione Elenco Operatori iscritti nell&#39;area riservata Operatori dove è presente la voce Num. iscr. operatore. | 
@@ -519,7 +514,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Elenco delle unità locali |  * Paging-PageCount - Numero totale di pagine. <br>  * Paging-Page - Numero di pagina. <br>  * Paging-PageSize - Dimensione della pagina. <br>  * Paging-TotalRecordCount - Numero totale di record. <br>  |
@@ -540,8 +534,9 @@ Restituisce le informazioni sull'autorizzazione comunicate dall'operatore al mom
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.aut_recer_model import AutRecerModel
 from rentri_anagrafiche.rest import ApiException
@@ -583,7 +578,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **num_iscr** | **str**| Numero iscrizione operatore rilasciato all&#39;iscrizione. Per recuperare il numero iscrizione attribuito all&#39;operatore consultare l&#39;operazione Elenco Operatori iscritti nell&#39;area riservata Operatori dove è presente la voce Num. iscr. operatore. | 
@@ -603,7 +597,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Dati delle autorizzazioni relativamente all&#39;unità locale. |  -  |
@@ -624,8 +617,9 @@ Ottiene il dettaglio dell'unità locale.<hr/><i>Servizio richiamabile in modalit
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.sito_model import SitoModel
 from rentri_anagrafiche.rest import ApiException
@@ -667,7 +661,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **num_iscr** | **str**| Numero iscrizione operatore rilasciato all&#39;iscrizione. Per recuperare il numero iscrizione attribuito all&#39;operatore consultare l&#39;operazione Elenco Operatori iscritti nell&#39;area riservata Operatori dove è presente la voce Num. iscr. operatore. | 
@@ -687,7 +680,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Dati dell&#39;unità locale. |  -  |
@@ -708,8 +700,9 @@ Ottiene l'elenco dei registri, filtrati in base ai criteri specificati.<hr/><i>S
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.registro_model import RegistroModel
 from rentri_anagrafiche.rest import ApiException
@@ -756,7 +749,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **num_iscr** | **str**| Numero iscrizione operatore rilasciato all&#39;iscrizione. Per recuperare l&#39;identificativo attribuito all&#39;operatore consultare l&#39;operazione Elenco Operatori iscritti nell&#39;area riservata Operatori dove è presente la voce Num. iscr. operatore. | 
@@ -781,7 +773,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Lista dei registri. |  * Paging-PageCount - Numero totale di pagine. <br>  * Paging-Page - Numero di pagina. <br>  * Paging-PageSize - Dimensione della pagina. <br>  * Paging-TotalRecordCount - Numero totale di record. <br>  |
@@ -802,8 +793,9 @@ Chiude un registro.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le ri
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
@@ -841,7 +833,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Identificativo del registro da chiudere. | 
@@ -860,7 +851,6 @@ void (empty response body)
  - **Accept**: application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Registro chiuso correttamente. |  -  |
@@ -882,8 +872,9 @@ Ottiene il dettaglio di un registro.<hr/><i>Servizio richiamabile in modalità <
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.registro_model import RegistroModel
 from rentri_anagrafiche.rest import ApiException
@@ -924,7 +915,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Identificativo del registro. | 
@@ -943,7 +933,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Dati del registro. |  -  |
@@ -964,8 +953,9 @@ Modifica di un registro.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.update_registro_operatore_request import UpdateRegistroOperatoreRequest
 from rentri_anagrafiche.models.update_registro_response import UpdateRegistroResponse
@@ -1008,7 +998,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Identificativo del registro da chiudere. | 
@@ -1028,7 +1017,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Identificativo del registro aggiornato. |  -  |
@@ -1050,8 +1038,9 @@ Ottiene la vidimazione virtuale del Registro in formato XML.  Rif. MODALITÀ OPE
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.downloadable_base_response import DownloadableBaseResponse
 from rentri_anagrafiche.rest import ApiException
@@ -1092,7 +1081,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Identificativo del registro. | 
@@ -1111,7 +1099,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Nel campo \&quot;content\&quot; viene restituito il file XML firmato digitalmente nel formato Base64, che  risponde alla definizione del \&quot;element &#x3D; eREGI\&quot; definito nello schema XSD consultabile nella sezione \&quot;Risorse &gt; Schemi di validazione XSD\&quot; nel file “rentri-registri-1.0.xsd”. |  -  |
@@ -1132,8 +1119,9 @@ Apre un nuovo registro.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (l
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.create_registro_request import CreateRegistroRequest
 from rentri_anagrafiche.models.create_registro_response import CreateRegistroResponse
@@ -1175,7 +1163,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **create_registro_request** | [**CreateRegistroRequest**](CreateRegistroRequest.md)| Richiesta. | [optional] 
@@ -1194,7 +1181,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **201** | Identificativo del registro aperto. |  -  |
@@ -1216,8 +1202,9 @@ Chiude un registro.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (le ri
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
@@ -1255,7 +1242,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Identificativo del registro da chiudere. | 
@@ -1274,7 +1260,6 @@ void (empty response body)
  - **Accept**: application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Registro chiuso correttamente. |  -  |
@@ -1296,8 +1281,9 @@ Ottiene il dettaglio di un registro.<hr/><i>Servizio richiamabile in modalità <
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.registro_model import RegistroModel
 from rentri_anagrafiche.rest import ApiException
@@ -1338,7 +1324,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Identificativo del registro. | 
@@ -1357,7 +1342,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Dati del registro. |  -  |
@@ -1378,8 +1362,9 @@ Modifica di un registro.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.update_registro_operatore_request import UpdateRegistroOperatoreRequest
 from rentri_anagrafiche.models.update_registro_response import UpdateRegistroResponse
@@ -1422,7 +1407,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Identificativo del registro da chiudere. | 
@@ -1442,7 +1426,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Identificativo del registro aggiornato. |  -  |
@@ -1464,8 +1447,9 @@ Ottiene la vidimazione virtuale del Registro in formato XML.  Rif. MODALITÀ OPE
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.downloadable_base_response import DownloadableBaseResponse
 from rentri_anagrafiche.rest import ApiException
@@ -1506,7 +1490,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Identificativo del registro. | 
@@ -1525,7 +1508,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Nel campo \&quot;content\&quot; viene restituito il file XML firmato digitalmente nel formato Base64, che  risponde alla definizione del \&quot;element &#x3D; eREGI\&quot; definito nello schema XSD consultabile nella sezione \&quot;Risorse &gt; Schemi di validazione XSD\&quot; nel file “rentri-registri-1.0.xsd”. |  -  |
@@ -1546,8 +1528,9 @@ Apre un nuovo registro.<hr/><i>Servizio richiamabile in modalità <b>STUB</b> (l
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.create_registro_request import CreateRegistroRequest
 from rentri_anagrafiche.models.create_registro_response import CreateRegistroResponse
@@ -1589,7 +1572,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **create_registro_request** | [**CreateRegistroRequest**](CreateRegistroRequest.md)| Richiesta. | [optional] 
@@ -1608,7 +1590,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **201** | Identificativo del registro aperto. |  -  |

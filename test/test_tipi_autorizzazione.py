@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.tipi_autorizzazione import TipiAutorizzazione
+from rentri_anagrafiche.models.tipi_autorizzazione import TipiAutorizzazione  # noqa: E501
 
 class TestTipiAutorizzazione(unittest.TestCase):
     """TipiAutorizzazione unit test stubs"""

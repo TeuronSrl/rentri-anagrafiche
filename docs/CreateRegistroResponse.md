@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **identificativo** | **str** |  | [optional] 
@@ -17,7 +16,7 @@ json = "{}"
 # create an instance of CreateRegistroResponse from a JSON string
 create_registro_response_instance = CreateRegistroResponse.from_json(json)
 # print the JSON string representation of the object
-print(CreateRegistroResponse.to_json())
+print CreateRegistroResponse.to_json()
 
 # convert the object into a dict
 create_registro_response_dict = create_registro_response_instance.to_dict()

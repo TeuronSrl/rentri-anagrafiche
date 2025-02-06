@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.stati_cat_albo import StatiCatAlbo
+from rentri_anagrafiche.models.stati_cat_albo import StatiCatAlbo  # noqa: E501
 
 class TestStatiCatAlbo(unittest.TestCase):
     """StatiCatAlbo unit test stubs"""

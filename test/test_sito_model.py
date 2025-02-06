@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.sito_model import SitoModel
+from rentri_anagrafiche.models.sito_model import SitoModel  # noqa: E501
 
 class TestSitoModel(unittest.TestCase):
     """SitoModel unit test stubs"""
@@ -28,12 +29,12 @@ class TestSitoModel(unittest.TestCase):
 
     def make_instance(self, include_optional) -> SitoModel:
         """Test SitoModel
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `SitoModel`
         """
-        model = SitoModel()
+        model = SitoModel()  # noqa: E501
         if include_optional:
             return SitoModel(
                 num_iscr_sito = '',

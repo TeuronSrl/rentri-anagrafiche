@@ -3,7 +3,6 @@
 Stato delega soggetto delegato
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **num_iscr_associazione** | **str** |  | [optional] 
@@ -22,7 +21,7 @@ json = "{}"
 # create an instance of SitoDelegaAssModel from a JSON string
 sito_delega_ass_model_instance = SitoDelegaAssModel.from_json(json)
 # print the JSON string representation of the object
-print(SitoDelegaAssModel.to_json())
+print SitoDelegaAssModel.to_json()
 
 # convert the object into a dict
 sito_delega_ass_model_dict = sito_delega_ass_model_instance.to_dict()

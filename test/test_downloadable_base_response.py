@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.downloadable_base_response import DownloadableBaseResponse
+from rentri_anagrafiche.models.downloadable_base_response import DownloadableBaseResponse  # noqa: E501
 
 class TestDownloadableBaseResponse(unittest.TestCase):
     """DownloadableBaseResponse unit test stubs"""
@@ -28,12 +29,12 @@ class TestDownloadableBaseResponse(unittest.TestCase):
 
     def make_instance(self, include_optional) -> DownloadableBaseResponse:
         """Test DownloadableBaseResponse
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `DownloadableBaseResponse`
         """
-        model = DownloadableBaseResponse()
+        model = DownloadableBaseResponse()  # noqa: E501
         if include_optional:
             return DownloadableBaseResponse(
                 nome_file = '',

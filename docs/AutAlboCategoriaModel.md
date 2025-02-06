@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **categoria** | **str** |  | [optional] 
@@ -19,7 +18,7 @@ json = "{}"
 # create an instance of AutAlboCategoriaModel from a JSON string
 aut_albo_categoria_model_instance = AutAlboCategoriaModel.from_json(json)
 # print the JSON string representation of the object
-print(AutAlboCategoriaModel.to_json())
+print AutAlboCategoriaModel.to_json()
 
 # convert the object into a dict
 aut_albo_categoria_model_dict = aut_albo_categoria_model_instance.to_dict()

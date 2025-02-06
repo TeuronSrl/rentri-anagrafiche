@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.attivita import Attivita
+from rentri_anagrafiche.models.attivita import Attivita  # noqa: E501
 
 class TestAttivita(unittest.TestCase):
     """Attivita unit test stubs"""

@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **nome_file** | **str** | Nome del file | [optional] 
@@ -19,7 +18,7 @@ json = "{}"
 # create an instance of DownloadableBaseResponse from a JSON string
 downloadable_base_response_instance = DownloadableBaseResponse.from_json(json)
 # print the JSON string representation of the object
-print(DownloadableBaseResponse.to_json())
+print DownloadableBaseResponse.to_json()
 
 # convert the object into a dict
 downloadable_base_response_dict = downloadable_base_response_instance.to_dict()

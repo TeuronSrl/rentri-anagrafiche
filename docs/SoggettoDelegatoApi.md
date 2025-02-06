@@ -25,8 +25,9 @@ Ritorna l'elenco dei soggetti delegati.<hr/><i>Servizio richiamabile in modalit�
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.operatore_model import OperatoreModel
 from rentri_anagrafiche.rest import ApiException
@@ -65,7 +66,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 
 ### Parameters
-
 This endpoint does not need any parameter.
 
 ### Return type
@@ -82,7 +82,6 @@ This endpoint does not need any parameter.
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Elenco degli operatori. |  -  |
@@ -101,8 +100,9 @@ Ottiene l'elenco dei registri gestiti da un soggetto delegato, filtrati in base 
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.registro_model import RegistroModel
 from rentri_anagrafiche.rest import ApiException
@@ -149,7 +149,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **num_iscr_ass** | **str**| Numero iscrizione soggetto delegato rilasciato all&#39;iscrizione. Per recuperare il numero iscrizione del soggetto delegato consultare l&#39;operazione Elenco soggetti delegati iscritti nell&#39;area riservata Soggetti delegati dove è presente la voce Numero iscrizione. | 
@@ -174,7 +173,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Elenco dei registri. |  * Paging-PageCount - Numero totale di pagine. <br>  * Paging-Page - Numero di pagina. <br>  * Paging-PageSize - Dimensione della pagina. <br>  * Paging-TotalRecordCount - Numero totale di record. <br>  |
@@ -195,8 +193,9 @@ Ottiene l'elenco delle unità locali per cui ha delega il soggetto delegato.<hr/
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.sito_model import SitoModel
 from rentri_anagrafiche.rest import ApiException
@@ -247,7 +246,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **num_iscr_ass** | **str**| Numero iscrizione soggetto delegato rilasciato all&#39;iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l&#39;operazione Elenco soggetti delegati iscritti nell&#39;area riservata Soggetti delegati dove è presente la voce Numero iscrizione | 
@@ -276,7 +274,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Elenco delle unità locali. |  * Paging-PageCount - Numero totale di pagine. <br>  * Paging-Page - Numero di pagina. <br>  * Paging-PageSize - Dimensione della pagina. <br>  * Paging-TotalRecordCount - Numero totale di record. <br>  |
@@ -297,8 +294,9 @@ Ottiene il dettaglio dell'unità locale per cui ha delega il soggetto delegato.<
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.sito_model import SitoModel
 from rentri_anagrafiche.rest import ApiException
@@ -340,7 +338,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **num_iscr_ass** | **str**| Numero iscrizione soggetto delegato rilasciato all&#39;iscrizione. Per recuperare il numero iscrizione soggetto delegato consultare l&#39;operazione Elenco soggetti delegati iscritti nell&#39;area riservata Soggetti delegati dove è presente la voce Numero iscrizione | 
@@ -360,7 +357,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Dati delle autorizzazioni relativamente all&#39;unità locale. |  -  |
@@ -381,8 +377,9 @@ Chiude un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabile
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
@@ -420,7 +417,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Identificativo del registro da chiudere. | 
@@ -439,7 +435,6 @@ void (empty response body)
  - **Accept**: application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Registro chiuso correttamente. |  -  |
@@ -461,8 +456,9 @@ Ottiene il dettaglio di un registro gestito da un soggetto delegato.<hr/><i>Serv
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.registro_model import RegistroModel
 from rentri_anagrafiche.rest import ApiException
@@ -503,7 +499,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Identificativo del registro. | 
@@ -522,7 +517,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Dati del registro. |  -  |
@@ -543,8 +537,9 @@ Modifica un registro gestito da un soggetto delegato.<hr/><i>Servizio richiamabi
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.update_registro_request import UpdateRegistroRequest
 from rentri_anagrafiche.models.update_registro_response import UpdateRegistroResponse
@@ -587,7 +582,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Identificativo del registro da chiudere. | 
@@ -607,7 +601,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Identificativo del registro aggiornato. |  -  |
@@ -629,8 +622,9 @@ Ottiene la vidimazione virtuale del Registro in formato XML.  Rif. MODALITÀ OPE
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.downloadable_base_response import DownloadableBaseResponse
 from rentri_anagrafiche.rest import ApiException
@@ -671,7 +665,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **identificativo** | **str**| Identificativo del registro. | 
@@ -690,7 +683,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Nel campo \&quot;content\&quot; viene restituito il file XML firmato digitalmente nel formato Base64, che  risponde alla definizione del \&quot;element &#x3D; eREGI\&quot; definito nello schema XSD consultabile nella sezione \&quot;Risorse &gt; Schemi di validazione XSD\&quot; nel file “rentri-registri-1.0.xsd”. |  -  |
@@ -711,8 +703,9 @@ Apre un nuovo registro gestito da un soggetto delegato.<hr/><i>Servizio richiama
 ### Example
 
 * Bearer (JWT) Authentication (Bearer):
-
 ```python
+import time
+import os
 import rentri_anagrafiche
 from rentri_anagrafiche.models.create_registro_response import CreateRegistroResponse
 from rentri_anagrafiche.models.create_registro_soggetto_delegato_request import CreateRegistroSoggettoDelegatoRequest
@@ -754,7 +747,6 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ### Parameters
 
-
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **create_registro_soggetto_delegato_request** | [**CreateRegistroSoggettoDelegatoRequest**](CreateRegistroSoggettoDelegatoRequest.md)| Richiesta. | [optional] 
@@ -773,7 +765,6 @@ Name | Type | Description  | Notes
  - **Accept**: application/json, application/problem+json
 
 ### HTTP response details
-
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **201** | Identificativo del registro aperto. |  -  |

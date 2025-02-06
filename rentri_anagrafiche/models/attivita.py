@@ -13,10 +13,13 @@
 """  # noqa: E501
 
 
-from __future__ import annotations
 import json
-from enum import Enum
-from typing_extensions import Self
+import pprint
+import re  # noqa: F401
+from aenum import Enum, no_arg
+
+
+
 
 
 class Attivita(str, Enum):
@@ -35,8 +38,8 @@ class Attivita(str, Enum):
     INTERMEDIAZIONESENZADETENZIONE = 'IntermediazioneSenzaDetenzione'
 
     @classmethod
-    def from_json(cls, json_str: str) -> Self:
+    def from_json(cls, json_str: str) -> Attivita:
         """Create an instance of Attivita from a JSON string"""
-        return cls(json.loads(json_str))
+        return Attivita(json.loads(json_str))
 
 

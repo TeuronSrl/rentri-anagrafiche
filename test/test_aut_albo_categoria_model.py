@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.aut_albo_categoria_model import AutAlboCategoriaModel
+from rentri_anagrafiche.models.aut_albo_categoria_model import AutAlboCategoriaModel  # noqa: E501
 
 class TestAutAlboCategoriaModel(unittest.TestCase):
     """AutAlboCategoriaModel unit test stubs"""
@@ -28,12 +29,12 @@ class TestAutAlboCategoriaModel(unittest.TestCase):
 
     def make_instance(self, include_optional) -> AutAlboCategoriaModel:
         """Test AutAlboCategoriaModel
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `AutAlboCategoriaModel`
         """
-        model = AutAlboCategoriaModel()
+        model = AutAlboCategoriaModel()  # noqa: E501
         if include_optional:
             return AutAlboCategoriaModel(
                 categoria = '',

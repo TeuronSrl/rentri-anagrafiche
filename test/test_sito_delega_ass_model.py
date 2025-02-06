@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.sito_delega_ass_model import SitoDelegaAssModel
+from rentri_anagrafiche.models.sito_delega_ass_model import SitoDelegaAssModel  # noqa: E501
 
 class TestSitoDelegaAssModel(unittest.TestCase):
     """SitoDelegaAssModel unit test stubs"""
@@ -28,12 +29,12 @@ class TestSitoDelegaAssModel(unittest.TestCase):
 
     def make_instance(self, include_optional) -> SitoDelegaAssModel:
         """Test SitoDelegaAssModel
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `SitoDelegaAssModel`
         """
-        model = SitoDelegaAssModel()
+        model = SitoDelegaAssModel()  # noqa: E501
         if include_optional:
             return SitoDelegaAssModel(
                 num_iscr_associazione = '',

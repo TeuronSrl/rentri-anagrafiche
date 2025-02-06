@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.update_registro_operatore_request import UpdateRegistroOperatoreRequest
+from rentri_anagrafiche.models.update_registro_operatore_request import UpdateRegistroOperatoreRequest  # noqa: E501
 
 class TestUpdateRegistroOperatoreRequest(unittest.TestCase):
     """UpdateRegistroOperatoreRequest unit test stubs"""
@@ -28,12 +29,12 @@ class TestUpdateRegistroOperatoreRequest(unittest.TestCase):
 
     def make_instance(self, include_optional) -> UpdateRegistroOperatoreRequest:
         """Test UpdateRegistroOperatoreRequest
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `UpdateRegistroOperatoreRequest`
         """
-        model = UpdateRegistroOperatoreRequest()
+        model = UpdateRegistroOperatoreRequest()  # noqa: E501
         if include_optional:
             return UpdateRegistroOperatoreRequest(
                 attivita_rec_smalt = [

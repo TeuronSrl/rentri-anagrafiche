@@ -19,101 +19,84 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, StrictBool, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import List, Optional
+from pydantic import BaseModel, StrictBool, StrictInt, StrictStr, conlist
 from rentri_anagrafiche.models.aut_albo_categoria_model import AutAlboCategoriaModel
-from typing import Optional, Set
-from typing_extensions import Self
 
 class AutAlboModel(BaseModel):
     """
     AutAlboModel
-    """ # noqa: E501
+    """
     sezione: Optional[StrictStr] = None
     numero_iscrizione: Optional[StrictInt] = None
     attiva: Optional[StrictBool] = None
     data_iscrizione: Optional[datetime] = None
-    categorie: Optional[List[AutAlboCategoriaModel]] = None
-    __properties: ClassVar[List[str]] = ["sezione", "numero_iscrizione", "attiva", "data_iscrizione", "categorie"]
+    categorie: Optional[conlist(AutAlboCategoriaModel)] = None
+    __properties = ["sezione", "numero_iscrizione", "attiva", "data_iscrizione", "categorie"]
 
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
-
+    class Config:
+        """Pydantic configuration"""
+        allow_population_by_field_name = True
+        validate_assignment = True
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        return pprint.pformat(self.dict(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> AutAlboModel:
         """Create an instance of AutAlboModel from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Return the dictionary representation of the model using alias.
-
-        This has the following differences from calling pydantic's
-        `self.model_dump(by_alias=True)`:
-
-        * `None` is only added to the output dict for nullable fields that
-          were set at model initialization. Other fields with value `None`
-          are ignored.
-        """
-        excluded_fields: Set[str] = set([
-        ])
-
-        _dict = self.model_dump(
-            by_alias=True,
-            exclude=excluded_fields,
-            exclude_none=True,
-        )
+    def to_dict(self):
+        """Returns the dictionary representation of the model using alias"""
+        _dict = self.dict(by_alias=True,
+                          exclude={
+                          },
+                          exclude_none=True)
         # override the default output from pydantic by calling `to_dict()` of each item in categorie (list)
         _items = []
         if self.categorie:
-            for _item_categorie in self.categorie:
-                if _item_categorie:
-                    _items.append(_item_categorie.to_dict())
+            for _item in self.categorie:
+                if _item:
+                    _items.append(_item.to_dict())
             _dict['categorie'] = _items
         # set to None if sezione (nullable) is None
-        # and model_fields_set contains the field
-        if self.sezione is None and "sezione" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.sezione is None and "sezione" in self.__fields_set__:
             _dict['sezione'] = None
 
         # set to None if data_iscrizione (nullable) is None
-        # and model_fields_set contains the field
-        if self.data_iscrizione is None and "data_iscrizione" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.data_iscrizione is None and "data_iscrizione" in self.__fields_set__:
             _dict['data_iscrizione'] = None
 
         # set to None if categorie (nullable) is None
-        # and model_fields_set contains the field
-        if self.categorie is None and "categorie" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.categorie is None and "categorie" in self.__fields_set__:
             _dict['categorie'] = None
 
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict) -> AutAlboModel:
         """Create an instance of AutAlboModel from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return cls.model_validate(obj)
+            return AutAlboModel.parse_obj(obj)
 
-        _obj = cls.model_validate({
+        _obj = AutAlboModel.parse_obj({
             "sezione": obj.get("sezione"),
             "numero_iscrizione": obj.get("numero_iscrizione"),
             "attiva": obj.get("attiva"),
             "data_iscrizione": obj.get("data_iscrizione"),
-            "categorie": [AutAlboCategoriaModel.from_dict(_item) for _item in obj["categorie"]] if obj.get("categorie") is not None else None
+            "categorie": [AutAlboCategoriaModel.from_dict(_item) for _item in obj.get("categorie")] if obj.get("categorie") is not None else None
         })
         return _obj
 

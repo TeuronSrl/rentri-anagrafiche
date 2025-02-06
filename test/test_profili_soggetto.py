@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.profili_soggetto import ProfiliSoggetto
+from rentri_anagrafiche.models.profili_soggetto import ProfiliSoggetto  # noqa: E501
 
 class TestProfiliSoggetto(unittest.TestCase):
     """ProfiliSoggetto unit test stubs"""

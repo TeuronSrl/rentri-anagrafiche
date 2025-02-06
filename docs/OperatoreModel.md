@@ -3,7 +3,6 @@
 Operatore
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **num_iscr** | **str** |  | [optional] 
@@ -45,7 +44,7 @@ json = "{}"
 # create an instance of OperatoreModel from a JSON string
 operatore_model_instance = OperatoreModel.from_json(json)
 # print the JSON string representation of the object
-print(OperatoreModel.to_json())
+print OperatoreModel.to_json()
 
 # convert the object into a dict
 operatore_model_dict = operatore_model_instance.to_dict()

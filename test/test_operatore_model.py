@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.operatore_model import OperatoreModel
+from rentri_anagrafiche.models.operatore_model import OperatoreModel  # noqa: E501
 
 class TestOperatoreModel(unittest.TestCase):
     """OperatoreModel unit test stubs"""
@@ -28,12 +29,12 @@ class TestOperatoreModel(unittest.TestCase):
 
     def make_instance(self, include_optional) -> OperatoreModel:
         """Test OperatoreModel
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `OperatoreModel`
         """
-        model = OperatoreModel()
+        model = OperatoreModel()  # noqa: E501
         if include_optional:
             return OperatoreModel(
                 num_iscr = '',

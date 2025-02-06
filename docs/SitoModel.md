@@ -3,7 +3,6 @@
 Unità locale
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **num_iscr_sito** | **str** |  | [optional] 
@@ -36,7 +35,7 @@ json = "{}"
 # create an instance of SitoModel from a JSON string
 sito_model_instance = SitoModel.from_json(json)
 # print the JSON string representation of the object
-print(SitoModel.to_json())
+print SitoModel.to_json()
 
 # convert the object into a dict
 sito_model_dict = sito_model_instance.to_dict()

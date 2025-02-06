@@ -19,18 +19,16 @@ import re  # noqa: F401
 import json
 
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
-from typing import Any, ClassVar, Dict, List, Optional
+from typing import List, Optional
+from pydantic import BaseModel, Field, StrictBool, StrictInt, StrictStr, conlist
 from rentri_anagrafiche.models.attivita import Attivita
 from rentri_anagrafiche.models.operazioni_recupero_smaltimento import OperazioniRecuperoSmaltimento
 from rentri_anagrafiche.models.stati import Stati
-from typing import Optional, Set
-from typing_extensions import Self
 
 class RegistroModel(BaseModel):
     """
-    Registro
-    """ # noqa: E501
+    Registro  # noqa: E501
+    """
     identificativo: Optional[StrictStr] = None
     descrizione: Optional[StrictStr] = None
     data_creazione: Optional[datetime] = None
@@ -44,144 +42,129 @@ class RegistroModel(BaseModel):
     ipa_operatore_sito: Optional[StrictStr] = None
     cu_aoo_sito: Optional[StrictStr] = None
     cuu_sito: Optional[StrictStr] = None
-    attivita: Optional[List[Attivita]] = Field(default=None, description="<p>Valori ammessi:<ul style=\"margin:0\"><li><i>CentroRaccolta</i> - Centro di raccolta</li><li><i>Produzione</i> - Produzione di rifiuti</li><li><i>Recupero</i> - Recupero di rifiuti</li><li><i>Smaltimento</i> - Smaltimento di rifiuti</li><li><i>Trasporto</i> - Trasporto di rifiuti</li><li><i>IntermediazioneSenzaDetenzione</i> - Intermediazione e commercio di rifiuti senza detenzione</li></ul></p>")
-    attivita_rec_smalt: Optional[List[OperazioniRecuperoSmaltimento]] = Field(default=None, description="<p>Valori ammessi:<ul style=\"margin:0\"><li><i>R1</i> - Utilizzazione principale come combustibile o come altro mezzo per produrre energia</li><li><i>R2</i> - Rigenerazione/recupero di solventi</li><li><i>R3</i> - Riciclo/recupero delle sostanze organiche non utilizzate come solventi</li><li><i>R4</i> - Riciclo/recupero dei metalli e dei composti metallici</li><li><i>R5</i> - Riciclo/recupero di altre sostanze inorganiche</li><li><i>R6</i> - Rigenerazione degli acidi o delle basi</li><li><i>R7</i> - Recupero dei prodotti che servono a captare gli inquinanti</li><li><i>R8</i> - Recupero dei prodotti provenienti dai catalizzatori</li><li><i>R9</i> - Rigenerazione o altri reimpieghi degli oli</li><li><i>R10</i> - Spandimento sul suolo a beneficio dell'agricoltura o dell'ecologia</li><li><i>R11</i> - Utilizzazione di rifiuti ottenuti da una delle operazioni indicate da R1 a R10</li><li><i>R12</i> - Scambio di rifiuti per sottoporli a una delle operazioni indicate da R1 a R11</li><li><i>R13</i> - Messa in riserva di rifiuti per sottoporli a una delle operazioni indicate nei punti da R1 a R12</li><li><i>D1</i> - Deposito sul o nel suolo</li><li><i>D2</i> - Trattamento in ambiente terrestre</li><li><i>D3</i> - Iniezioni in profondità</li><li><i>D4</i> - Lagunaggio</li><li><i>D5</i> - Messa in discarica specialmente allestita</li><li><i>D6</i> - Scarico dei rifiuti solidi nell'ambiente idrico eccetto l'immersione</li><li><i>D7</i> - Immersione, compreso il seppellimento nel sottosuolo marino</li><li><i>D8</i> - Trattamento biologico non specificato altrove nel presente allegato</li><li><i>D9</i> - Trattamento fisico-chimico non specificato altrove nel presente allegato</li><li><i>D10</i> - Incenerimento a terra</li><li><i>D11</i> - Incenerimento in mare</li><li><i>D12</i> - Deposito permanente</li><li><i>D13</i> - Raggruppamento preliminare prima di una delle operazioni di cui ai punti da D1 a D12</li><li><i>D14</i> - Ricondizionamento preliminare prima di una delle operazioni di cui ai punti da D1 a D13</li><li><i>D15</i> - Deposito preliminare prima di una delle operazioni di cui ai punti da D1 a D14</li></ul></p>")
+    attivita: Optional[conlist(Attivita)] = Field(default=None, description="<p>Valori ammessi:<ul style=\"margin:0\"><li><i>CentroRaccolta</i> - Centro di raccolta</li><li><i>Produzione</i> - Produzione di rifiuti</li><li><i>Recupero</i> - Recupero di rifiuti</li><li><i>Smaltimento</i> - Smaltimento di rifiuti</li><li><i>Trasporto</i> - Trasporto di rifiuti</li><li><i>IntermediazioneSenzaDetenzione</i> - Intermediazione e commercio di rifiuti senza detenzione</li></ul></p>")
+    attivita_rec_smalt: Optional[conlist(OperazioniRecuperoSmaltimento)] = Field(default=None, description="<p>Valori ammessi:<ul style=\"margin:0\"><li><i>R1</i> - Utilizzazione principale come combustibile o come altro mezzo per produrre energia</li><li><i>R2</i> - Rigenerazione/recupero di solventi</li><li><i>R3</i> - Riciclo/recupero delle sostanze organiche non utilizzate come solventi</li><li><i>R4</i> - Riciclo/recupero dei metalli e dei composti metallici</li><li><i>R5</i> - Riciclo/recupero di altre sostanze inorganiche</li><li><i>R6</i> - Rigenerazione degli acidi o delle basi</li><li><i>R7</i> - Recupero dei prodotti che servono a captare gli inquinanti</li><li><i>R8</i> - Recupero dei prodotti provenienti dai catalizzatori</li><li><i>R9</i> - Rigenerazione o altri reimpieghi degli oli</li><li><i>R10</i> - Spandimento sul suolo a beneficio dell'agricoltura o dell'ecologia</li><li><i>R11</i> - Utilizzazione di rifiuti ottenuti da una delle operazioni indicate da R1 a R10</li><li><i>R12</i> - Scambio di rifiuti per sottoporli a una delle operazioni indicate da R1 a R11</li><li><i>R13</i> - Messa in riserva di rifiuti per sottoporli a una delle operazioni indicate nei punti da R1 a R12</li><li><i>D1</i> - Deposito sul o nel suolo</li><li><i>D2</i> - Trattamento in ambiente terrestre</li><li><i>D3</i> - Iniezioni in profondità</li><li><i>D4</i> - Lagunaggio</li><li><i>D5</i> - Messa in discarica specialmente allestita</li><li><i>D6</i> - Scarico dei rifiuti solidi nell'ambiente idrico eccetto l'immersione</li><li><i>D7</i> - Immersione, compreso il seppellimento nel sottosuolo marino</li><li><i>D8</i> - Trattamento biologico non specificato altrove nel presente allegato</li><li><i>D9</i> - Trattamento fisico-chimico non specificato altrove nel presente allegato</li><li><i>D10</i> - Incenerimento a terra</li><li><i>D11</i> - Incenerimento in mare</li><li><i>D12</i> - Deposito permanente</li><li><i>D13</i> - Raggruppamento preliminare prima di una delle operazioni di cui ai punti da D1 a D12</li><li><i>D14</i> - Ricondizionamento preliminare prima di una delle operazioni di cui ai punti da D1 a D13</li><li><i>D15</i> - Deposito preliminare prima di una delle operazioni di cui ai punti da D1 a D14</li></ul></p>")
     stato: Optional[Stati] = None
     uso_locale: Optional[StrictBool] = None
     progressivo_inziale_locale: Optional[StrictInt] = None
-    __properties: ClassVar[List[str]] = ["identificativo", "descrizione", "data_creazione", "data_chiusura", "data_modifica", "num_iscr_associazione", "identificativo_associazione", "num_iscr_sito", "identificativo_operatore_sito", "operatore_sito", "ipa_operatore_sito", "cu_aoo_sito", "cuu_sito", "attivita", "attivita_rec_smalt", "stato", "uso_locale", "progressivo_inziale_locale"]
+    __properties = ["identificativo", "descrizione", "data_creazione", "data_chiusura", "data_modifica", "num_iscr_associazione", "identificativo_associazione", "num_iscr_sito", "identificativo_operatore_sito", "operatore_sito", "ipa_operatore_sito", "cu_aoo_sito", "cuu_sito", "attivita", "attivita_rec_smalt", "stato", "uso_locale", "progressivo_inziale_locale"]
 
-    model_config = ConfigDict(
-        populate_by_name=True,
-        validate_assignment=True,
-        protected_namespaces=(),
-    )
-
+    class Config:
+        """Pydantic configuration"""
+        allow_population_by_field_name = True
+        validate_assignment = True
 
     def to_str(self) -> str:
         """Returns the string representation of the model using alias"""
-        return pprint.pformat(self.model_dump(by_alias=True))
+        return pprint.pformat(self.dict(by_alias=True))
 
     def to_json(self) -> str:
         """Returns the JSON representation of the model using alias"""
-        # TODO: pydantic v2: use .model_dump_json(by_alias=True, exclude_unset=True) instead
         return json.dumps(self.to_dict())
 
     @classmethod
-    def from_json(cls, json_str: str) -> Optional[Self]:
+    def from_json(cls, json_str: str) -> RegistroModel:
         """Create an instance of RegistroModel from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Return the dictionary representation of the model using alias.
-
-        This has the following differences from calling pydantic's
-        `self.model_dump(by_alias=True)`:
-
-        * `None` is only added to the output dict for nullable fields that
-          were set at model initialization. Other fields with value `None`
-          are ignored.
-        """
-        excluded_fields: Set[str] = set([
-        ])
-
-        _dict = self.model_dump(
-            by_alias=True,
-            exclude=excluded_fields,
-            exclude_none=True,
-        )
+    def to_dict(self):
+        """Returns the dictionary representation of the model using alias"""
+        _dict = self.dict(by_alias=True,
+                          exclude={
+                          },
+                          exclude_none=True)
         # set to None if identificativo (nullable) is None
-        # and model_fields_set contains the field
-        if self.identificativo is None and "identificativo" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.identificativo is None and "identificativo" in self.__fields_set__:
             _dict['identificativo'] = None
 
         # set to None if descrizione (nullable) is None
-        # and model_fields_set contains the field
-        if self.descrizione is None and "descrizione" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.descrizione is None and "descrizione" in self.__fields_set__:
             _dict['descrizione'] = None
 
         # set to None if data_chiusura (nullable) is None
-        # and model_fields_set contains the field
-        if self.data_chiusura is None and "data_chiusura" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.data_chiusura is None and "data_chiusura" in self.__fields_set__:
             _dict['data_chiusura'] = None
 
         # set to None if data_modifica (nullable) is None
-        # and model_fields_set contains the field
-        if self.data_modifica is None and "data_modifica" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.data_modifica is None and "data_modifica" in self.__fields_set__:
             _dict['data_modifica'] = None
 
         # set to None if num_iscr_associazione (nullable) is None
-        # and model_fields_set contains the field
-        if self.num_iscr_associazione is None and "num_iscr_associazione" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.num_iscr_associazione is None and "num_iscr_associazione" in self.__fields_set__:
             _dict['num_iscr_associazione'] = None
 
         # set to None if identificativo_associazione (nullable) is None
-        # and model_fields_set contains the field
-        if self.identificativo_associazione is None and "identificativo_associazione" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.identificativo_associazione is None and "identificativo_associazione" in self.__fields_set__:
             _dict['identificativo_associazione'] = None
 
         # set to None if num_iscr_sito (nullable) is None
-        # and model_fields_set contains the field
-        if self.num_iscr_sito is None and "num_iscr_sito" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.num_iscr_sito is None and "num_iscr_sito" in self.__fields_set__:
             _dict['num_iscr_sito'] = None
 
         # set to None if identificativo_operatore_sito (nullable) is None
-        # and model_fields_set contains the field
-        if self.identificativo_operatore_sito is None and "identificativo_operatore_sito" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.identificativo_operatore_sito is None and "identificativo_operatore_sito" in self.__fields_set__:
             _dict['identificativo_operatore_sito'] = None
 
         # set to None if operatore_sito (nullable) is None
-        # and model_fields_set contains the field
-        if self.operatore_sito is None and "operatore_sito" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.operatore_sito is None and "operatore_sito" in self.__fields_set__:
             _dict['operatore_sito'] = None
 
         # set to None if ipa_operatore_sito (nullable) is None
-        # and model_fields_set contains the field
-        if self.ipa_operatore_sito is None and "ipa_operatore_sito" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.ipa_operatore_sito is None and "ipa_operatore_sito" in self.__fields_set__:
             _dict['ipa_operatore_sito'] = None
 
         # set to None if cu_aoo_sito (nullable) is None
-        # and model_fields_set contains the field
-        if self.cu_aoo_sito is None and "cu_aoo_sito" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.cu_aoo_sito is None and "cu_aoo_sito" in self.__fields_set__:
             _dict['cu_aoo_sito'] = None
 
         # set to None if cuu_sito (nullable) is None
-        # and model_fields_set contains the field
-        if self.cuu_sito is None and "cuu_sito" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.cuu_sito is None and "cuu_sito" in self.__fields_set__:
             _dict['cuu_sito'] = None
 
         # set to None if attivita (nullable) is None
-        # and model_fields_set contains the field
-        if self.attivita is None and "attivita" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.attivita is None and "attivita" in self.__fields_set__:
             _dict['attivita'] = None
 
         # set to None if attivita_rec_smalt (nullable) is None
-        # and model_fields_set contains the field
-        if self.attivita_rec_smalt is None and "attivita_rec_smalt" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.attivita_rec_smalt is None and "attivita_rec_smalt" in self.__fields_set__:
             _dict['attivita_rec_smalt'] = None
 
         # set to None if uso_locale (nullable) is None
-        # and model_fields_set contains the field
-        if self.uso_locale is None and "uso_locale" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.uso_locale is None and "uso_locale" in self.__fields_set__:
             _dict['uso_locale'] = None
 
         # set to None if progressivo_inziale_locale (nullable) is None
-        # and model_fields_set contains the field
-        if self.progressivo_inziale_locale is None and "progressivo_inziale_locale" in self.model_fields_set:
+        # and __fields_set__ contains the field
+        if self.progressivo_inziale_locale is None and "progressivo_inziale_locale" in self.__fields_set__:
             _dict['progressivo_inziale_locale'] = None
 
         return _dict
 
     @classmethod
-    def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
+    def from_dict(cls, obj: dict) -> RegistroModel:
         """Create an instance of RegistroModel from a dict"""
         if obj is None:
             return None
 
         if not isinstance(obj, dict):
-            return cls.model_validate(obj)
+            return RegistroModel.parse_obj(obj)
 
-        _obj = cls.model_validate({
+        _obj = RegistroModel.parse_obj({
             "identificativo": obj.get("identificativo"),
             "descrizione": obj.get("descrizione"),
             "data_creazione": obj.get("data_creazione"),

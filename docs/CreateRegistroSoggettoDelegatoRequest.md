@@ -2,7 +2,6 @@
 
 
 ## Properties
-
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **num_iscr_sito** | **str** | Numero iscrizione unità locale rilasciato all&#39;iscrizione. Per recuperare l&#39;identificativo attribuito all&#39;unità locale delegante consultare l&#39;operazione Elenco unità locali deleganti  nell&#39;area riservata Soggetti delegati dove è presente la voce Num. iscr. UL. | 
@@ -19,7 +18,7 @@ json = "{}"
 # create an instance of CreateRegistroSoggettoDelegatoRequest from a JSON string
 create_registro_soggetto_delegato_request_instance = CreateRegistroSoggettoDelegatoRequest.from_json(json)
 # print the JSON string representation of the object
-print(CreateRegistroSoggettoDelegatoRequest.to_json())
+print CreateRegistroSoggettoDelegatoRequest.to_json()
 
 # convert the object into a dict
 create_registro_soggetto_delegato_request_dict = create_registro_soggetto_delegato_request_instance.to_dict()

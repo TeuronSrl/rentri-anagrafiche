@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.aut_recer_model import AutRecerModel
+from rentri_anagrafiche.models.aut_recer_model import AutRecerModel  # noqa: E501
 
 class TestAutRecerModel(unittest.TestCase):
     """AutRecerModel unit test stubs"""
@@ -28,12 +29,12 @@ class TestAutRecerModel(unittest.TestCase):
 
     def make_instance(self, include_optional) -> AutRecerModel:
         """Test AutRecerModel
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `AutRecerModel`
         """
-        model = AutRecerModel()
+        model = AutRecerModel()  # noqa: E501
         if include_optional:
             return AutRecerModel(
                 tipo_autorizzazione = 'RecSmalArt208',

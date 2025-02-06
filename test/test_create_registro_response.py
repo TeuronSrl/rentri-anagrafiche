@@ -14,8 +14,9 @@
 
 
 import unittest
+import datetime
 
-from rentri_anagrafiche.models.create_registro_response import CreateRegistroResponse
+from rentri_anagrafiche.models.create_registro_response import CreateRegistroResponse  # noqa: E501
 
 class TestCreateRegistroResponse(unittest.TestCase):
     """CreateRegistroResponse unit test stubs"""
@@ -28,12 +29,12 @@ class TestCreateRegistroResponse(unittest.TestCase):
 
     def make_instance(self, include_optional) -> CreateRegistroResponse:
         """Test CreateRegistroResponse
-            include_optional is a boolean, when False only required
+            include_option is a boolean, when False only required
             params are included, when True both required and
             optional params are included """
         # uncomment below to create an instance of `CreateRegistroResponse`
         """
-        model = CreateRegistroResponse()
+        model = CreateRegistroResponse()  # noqa: E501
         if include_optional:
             return CreateRegistroResponse(
                 identificativo = ''

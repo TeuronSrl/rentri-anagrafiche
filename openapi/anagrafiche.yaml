@@ -48,6 +48,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -90,6 +92,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -132,6 +136,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -186,6 +192,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -235,6 +243,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -375,6 +385,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -428,6 +440,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -485,6 +499,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -599,6 +615,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -650,6 +668,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -693,6 +713,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -750,6 +772,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -796,6 +820,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -859,6 +885,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -910,6 +938,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -956,6 +986,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -1016,6 +1048,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -1065,6 +1099,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -1131,6 +1167,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -1166,6 +1204,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -1281,6 +1321,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -1422,6 +1464,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -1478,6 +1522,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -1529,6 +1575,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -1573,6 +1621,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -1630,6 +1680,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -1676,6 +1728,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -1739,6 +1793,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Errore non gestito (contattare l'assistenza).
           content:
@@ -1765,6 +1821,8 @@ paths:
               description: >-
                 Indica quanto tempo il fruitore deve attendere prima di
                 effettuare una nuova richiesta.
+              schema:
+                type: string
         '500':
           description: Internal Server Error
           content:
