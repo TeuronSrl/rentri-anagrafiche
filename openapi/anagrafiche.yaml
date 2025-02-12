@@ -9,7 +9,7 @@ info:
   x-summary: Servizio Anagrafica RENTRI
   x-api-id: rentrigov.registro
 servers:
-  - url: 'https://demoapi.rentri.gov.it/anagrafiche/v1.0'
+  - url: 'https://api.rentri.gov.it/anagrafiche/v1.0'
     description: Demo
 paths:
   /operatore:

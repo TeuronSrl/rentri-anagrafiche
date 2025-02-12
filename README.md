@@ -56,10 +56,10 @@ import rentri_anagrafiche
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://demoapi.rentri.gov.it/anagrafiche/v1.0
+# Defining the host is optional and defaults to https://api.rentri.gov.it/anagrafiche/v1.0
 # See configuration.py for a list of all supported configuration parameters.
 configuration = rentri_anagrafiche.Configuration(
-    host = "https://demoapi.rentri.gov.it/anagrafiche/v1.0"
+    host = "https://api.rentri.gov.it/anagrafiche/v1.0"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -91,7 +91,7 @@ with rentri_anagrafiche.ApiClient(configuration) as api_client:
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://demoapi.rentri.gov.it/anagrafiche/v1.0*
+All URIs are relative to *https://api.rentri.gov.it/anagrafiche/v1.0*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------

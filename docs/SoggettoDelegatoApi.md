@@ -1,6 +1,6 @@
 # rentri_anagrafiche.SoggettoDelegatoApi
 
-All URIs are relative to *https://demoapi.rentri.gov.it/anagrafiche/v1.0*
+All URIs are relative to *https://api.rentri.gov.it/anagrafiche/v1.0*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -33,10 +33,10 @@ from rentri_anagrafiche.models.operatore_model import OperatoreModel
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://demoapi.rentri.gov.it/anagrafiche/v1.0
+# Defining the host is optional and defaults to https://api.rentri.gov.it/anagrafiche/v1.0
 # See configuration.py for a list of all supported configuration parameters.
 configuration = rentri_anagrafiche.Configuration(
-    host = "https://demoapi.rentri.gov.it/anagrafiche/v1.0"
+    host = "https://api.rentri.gov.it/anagrafiche/v1.0"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -108,10 +108,10 @@ from rentri_anagrafiche.models.registro_model import RegistroModel
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://demoapi.rentri.gov.it/anagrafiche/v1.0
+# Defining the host is optional and defaults to https://api.rentri.gov.it/anagrafiche/v1.0
 # See configuration.py for a list of all supported configuration parameters.
 configuration = rentri_anagrafiche.Configuration(
-    host = "https://demoapi.rentri.gov.it/anagrafiche/v1.0"
+    host = "https://api.rentri.gov.it/anagrafiche/v1.0"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -201,10 +201,10 @@ from rentri_anagrafiche.models.sito_model import SitoModel
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://demoapi.rentri.gov.it/anagrafiche/v1.0
+# Defining the host is optional and defaults to https://api.rentri.gov.it/anagrafiche/v1.0
 # See configuration.py for a list of all supported configuration parameters.
 configuration = rentri_anagrafiche.Configuration(
-    host = "https://demoapi.rentri.gov.it/anagrafiche/v1.0"
+    host = "https://api.rentri.gov.it/anagrafiche/v1.0"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -302,10 +302,10 @@ from rentri_anagrafiche.models.sito_model import SitoModel
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://demoapi.rentri.gov.it/anagrafiche/v1.0
+# Defining the host is optional and defaults to https://api.rentri.gov.it/anagrafiche/v1.0
 # See configuration.py for a list of all supported configuration parameters.
 configuration = rentri_anagrafiche.Configuration(
-    host = "https://demoapi.rentri.gov.it/anagrafiche/v1.0"
+    host = "https://api.rentri.gov.it/anagrafiche/v1.0"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -384,10 +384,10 @@ import rentri_anagrafiche
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://demoapi.rentri.gov.it/anagrafiche/v1.0
+# Defining the host is optional and defaults to https://api.rentri.gov.it/anagrafiche/v1.0
 # See configuration.py for a list of all supported configuration parameters.
 configuration = rentri_anagrafiche.Configuration(
-    host = "https://demoapi.rentri.gov.it/anagrafiche/v1.0"
+    host = "https://api.rentri.gov.it/anagrafiche/v1.0"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -464,10 +464,10 @@ from rentri_anagrafiche.models.registro_model import RegistroModel
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://demoapi.rentri.gov.it/anagrafiche/v1.0
+# Defining the host is optional and defaults to https://api.rentri.gov.it/anagrafiche/v1.0
 # See configuration.py for a list of all supported configuration parameters.
 configuration = rentri_anagrafiche.Configuration(
-    host = "https://demoapi.rentri.gov.it/anagrafiche/v1.0"
+    host = "https://api.rentri.gov.it/anagrafiche/v1.0"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -546,10 +546,10 @@ from rentri_anagrafiche.models.update_registro_response import UpdateRegistroRes
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://demoapi.rentri.gov.it/anagrafiche/v1.0
+# Defining the host is optional and defaults to https://api.rentri.gov.it/anagrafiche/v1.0
 # See configuration.py for a list of all supported configuration parameters.
 configuration = rentri_anagrafiche.Configuration(
-    host = "https://demoapi.rentri.gov.it/anagrafiche/v1.0"
+    host = "https://api.rentri.gov.it/anagrafiche/v1.0"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -630,10 +630,10 @@ from rentri_anagrafiche.models.downloadable_base_response import DownloadableBas
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://demoapi.rentri.gov.it/anagrafiche/v1.0
+# Defining the host is optional and defaults to https://api.rentri.gov.it/anagrafiche/v1.0
 # See configuration.py for a list of all supported configuration parameters.
 configuration = rentri_anagrafiche.Configuration(
-    host = "https://demoapi.rentri.gov.it/anagrafiche/v1.0"
+    host = "https://api.rentri.gov.it/anagrafiche/v1.0"
 )
 
 # The client must configure the authentication and authorization parameters
@@ -712,10 +712,10 @@ from rentri_anagrafiche.models.create_registro_soggetto_delegato_request import 
 from rentri_anagrafiche.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://demoapi.rentri.gov.it/anagrafiche/v1.0
+# Defining the host is optional and defaults to https://api.rentri.gov.it/anagrafiche/v1.0
 # See configuration.py for a list of all supported configuration parameters.
 configuration = rentri_anagrafiche.Configuration(
-    host = "https://demoapi.rentri.gov.it/anagrafiche/v1.0"
+    host = "https://api.rentri.gov.it/anagrafiche/v1.0"
 )
 
 # The client must configure the authentication and authorization parameters
